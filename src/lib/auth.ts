@@ -1,13 +1,8 @@
 import { parseCookie } from "solid-start";
+import { assertEnv } from "./env";
 
 export function isValidPassword(password: string) {
-  const envPassword = process.env.PASSWORD;
-
-  if (!envPassword) {
-    throw new Error("PASSWORD is not set");
-  }
-
-  return password === envPassword;
+  return password === assertEnv("PASSWORD");
 }
 
 export function isAuthorizedRequest(request: Request) {

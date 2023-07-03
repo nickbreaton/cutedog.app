@@ -8,6 +8,7 @@ import { getConnection } from "~/lib/database";
 import cloudinary from "cloudinary";
 import { Readable } from "streamx";
 import { css } from "~styled-system/css";
+import { assertEnv } from "~/lib/env";
 
 interface Interaction {
   id: number;
@@ -80,10 +81,13 @@ export default function Home() {
         return;
       }
 
-      const uploadStream = cloudinary.v2.uploader.upload_stream({ folder: "/cutedog-dev" }, (err, result) => {
-        if (err) return rej(err);
-        res(result!);
-      });
+      const uploadStream = cloudinary.v2.uploader.upload_stream(
+        { folder: assertEnv("CLOUDINARY_FOLDER") },
+        (err, result) => {
+          if (err) return rej(err);
+          res(result!);
+        }
+      );
 
       const readableStream = Readable.from(photo.stream());
       readableStream.pipe(uploadStream);
