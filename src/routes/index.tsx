@@ -72,7 +72,12 @@ export default function Home() {
     const lon = parseFloat(form.get("lon") as string);
     const photo = form.get("photo") as File;
 
-    const result = await new Promise<cloudinary.UploadApiResponse>(async (res, rej) => {
+    const result = await new Promise<cloudinary.UploadApiResponse | null>(async (res, rej) => {
+      if (!photo || photo.size === 0) {
+        res(null);
+        return;
+      }
+
       const uploadStream = cloudinary.v2.uploader.upload_stream({ folder: "/cutedog-dev" }, (err, result) => {
         if (err) return rej(err);
         res(result!);
@@ -82,16 +87,16 @@ export default function Home() {
       readableStream.pipe(uploadStream);
     });
 
+    console.log(result);
     await getConnection().execute(
       "insert into interactions (quotes, datetime, lat, lon, photoID) VALUES (?, ?, ?, ?, ?)",
-      [JSON.stringify([quote]), datetime, lat, lon, result.public_id]
+      [JSON.stringify([quote]), datetime, lat, lon, result?.public_id]
     );
   });
 
   const [, { Form: DeleteForm }] = createServerAction$(async (form: FormData) => {
     await getConnection().execute("delete from interactions");
   });
-
   return (
     <div>
       <Form style={{ display: "grid", "max-width": "400px", gap: "20px" }}>
