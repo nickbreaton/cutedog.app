@@ -1,21 +1,12 @@
-import { createRouteData, useRouteData } from "solid-start";
-import { connect } from "@planetscale/database";
+import { Link, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
-import { createComponent, createComputed, createEffect, onCleanup } from "solid-js";
+import { For, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
 import { getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
-
-const config = {
-  // cast: (field, value) => {
-  //   console.log(field, value);
-
-  //   return value;
-  // },
-  host: process.env.DATABASE_HOST,
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-};
+import { getConnection } from "~/lib/database";
+import cloudinary from "cloudinary";
+import { Readable } from "streamx";
 
 interface Interaction {
   id: number;
@@ -23,17 +14,25 @@ interface Interaction {
   quotes: string[];
   lat: number;
   lon: number;
+  photoID?: string;
   description?: string;
 }
 
-export function routeData() {
-  return createServerData$(async () => {
-    const conn = connect(config);
+interface InteractionResult extends Interaction {
+  photoURL?: string;
+}
 
-    const results = await conn.execute("select id, datetime, quotes, lat, lon from interactions");
+export function routeData() {
+  return createServerData$(async (): Promise<InteractionResult[]> => {
+    const results = await getConnection().execute("select id, datetime, quotes, lat, lon, photoID from interactions");
     const rows = results.rows as Interaction[];
 
-    return rows;
+    return rows.map((interaction) => ({
+      ...interaction,
+      photoURL: interaction.photoID
+        ? cloudinary.v2.url(interaction.photoID, { secure: true, fetch_format: "auto", quality: "auto" })
+        : undefined,
+    }));
   });
 }
 
@@ -41,30 +40,29 @@ function createCoordsStore() {
   const [store, set] = createStore({ lat: 0, lon: 0 });
 
   createComputed(() => {
-    if (!isServer) {
-      function run() {
-        navigator.geolocation.getCurrentPosition((position) => {
-          set({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          });
-
-          const timeout = setTimeout(() => {
-            run();
-          }, 1000);
-
-          onCleanup(() => clearTimeout(timeout));
-        });
-      }
-      run();
+    if (isServer) {
+      return;
     }
+
+    let timeout: NodeJS.Timeout;
+
+    function update() {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude: lat, longitude: lon } = position.coords;
+        set({ lat, lon });
+        timeout = setTimeout(update, 1000);
+      });
+    }
+
+    update();
+    onCleanup(() => clearTimeout(timeout));
   });
 
   return store;
 }
 
 export default function Home() {
-  const read = useRouteData<typeof routeData>();
+  const interactions = useRouteData<typeof routeData>();
   const coords = createCoordsStore();
 
   const [, { Form }] = createServerAction$(async (form: FormData, { request }) => {
@@ -73,22 +71,25 @@ export default function Home() {
     const lat = parseFloat(form.get("lat") as string);
     const lon = parseFloat(form.get("lon") as string);
     const photo = form.get("photo") as File;
-    console.log(Buffer.from(await photo.arrayBuffer()));
 
-    const conn = connect(config);
+    const result = await new Promise<cloudinary.UploadApiResponse>(async (res, rej) => {
+      const uploadStream = cloudinary.v2.uploader.upload_stream({ folder: "/cutedog-dev" }, (err, result) => {
+        if (err) return rej(err);
+        res(result!);
+      });
 
-    await conn.execute("insert into interactions (quotes, datetime, lat, lon, photo) VALUES (?, ?, ?, ?, ?)", [
-      JSON.stringify([quote]),
-      datetime,
-      lat,
-      lon,
-      photo,
-    ]);
+      const readableStream = Readable.from(photo.stream());
+      readableStream.pipe(uploadStream);
+    });
+
+    await getConnection().execute(
+      "insert into interactions (quotes, datetime, lat, lon, photoID) VALUES (?, ?, ?, ?, ?)",
+      [JSON.stringify([quote]), datetime, lat, lon, result.public_id]
+    );
   });
 
   const [, { Form: DeleteForm }] = createServerAction$(async (form: FormData) => {
-    const conn = connect(config);
-    await conn.execute("delete from interactions");
+    await getConnection().execute("delete from interactions");
   });
 
   return (
@@ -105,7 +106,14 @@ export default function Home() {
         <button>Save</button>
       </Form>
       results:
-      <pre>{JSON.stringify(read(), null, 2)}</pre>
+      <For each={interactions()}>
+        {(interaction) => (
+          <div>
+            <pre>{JSON.stringify(interaction, null, 2)}</pre>
+            <img src={interaction.photoURL} style={{ "max-width": "500px" }} />
+          </div>
+        )}
+      </For>
       <DeleteForm>
         <button>🚨 DELETE ALL</button>
       </DeleteForm>
