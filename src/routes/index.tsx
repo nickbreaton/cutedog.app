@@ -87,7 +87,6 @@ export default function Home() {
       const readableStream = Readable.from(photo.stream());
       readableStream.pipe(uploadStream);
     });
-    console.log({ timezone });
 
     await getConnection().execute(
       "insert into interactions (quotes, datetime, timezone, lat, lon, photoID) VALUES (?, ?, ?, ?, ?, ?)",

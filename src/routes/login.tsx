@@ -46,10 +46,6 @@ export default function Home() {
     return result;
   });
 
-  createEffect(() => {
-    console.log(submitting.result);
-  });
-
   return (
     <Form>
       Password
