@@ -1,7 +1,7 @@
 import { Link, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
 import { For, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
-import { getUTCDateTime } from "~/lib/date";
+import { getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
@@ -68,6 +68,7 @@ export default function Home() {
   const [, { Form }] = createServerAction$(async (form: FormData, { request }) => {
     const quote = form.get("quote");
     const datetime = form.get("datetime");
+    const timezone = form.get("timezone");
     const lat = parseFloat(form.get("lat") as string);
     const lon = parseFloat(form.get("lon") as string);
     const photo = form.get("photo") as File;
@@ -86,11 +87,11 @@ export default function Home() {
       const readableStream = Readable.from(photo.stream());
       readableStream.pipe(uploadStream);
     });
+    console.log({ timezone });
 
-    console.log(result);
     await getConnection().execute(
-      "insert into interactions (quotes, datetime, lat, lon, photoID) VALUES (?, ?, ?, ?, ?)",
-      [JSON.stringify([quote]), datetime, lat, lon, result?.public_id]
+      "insert into interactions (quotes, datetime, timezone, lat, lon, photoID) VALUES (?, ?, ?, ?, ?, ?)",
+      [JSON.stringify([quote]), datetime, timezone, lat, lon, result?.public_id]
     );
   });
 
@@ -103,6 +104,7 @@ export default function Home() {
         new:
         <input type="text" name="quote" value="Cute dog" />
         <input type="text" name="datetime" value={getUTCDateTime()} />
+        <input type="text" name="timezone" value={getLocalOffset()} />
         <div>
           <input type="text" name="lat" value={coords.lat} />
           <input type="text" name="lon" value={coords.lon} />
