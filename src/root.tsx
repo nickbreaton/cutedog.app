@@ -1,17 +1,8 @@
 // @refresh reload
 import { Suspense } from "solid-js";
-import {
-  A,
-  Body,
-  ErrorBoundary,
-  FileRoutes,
-  Head,
-  Html,
-  Meta,
-  Routes,
-  Scripts,
-  Title,
-} from "solid-start";
+import { A, Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from "solid-start";
+import { css } from "~styled-system/css";
+
 import "./root.css";
 
 export default function Root() {
@@ -22,7 +13,7 @@ export default function Root() {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Body>
+      <Body class={css({ fontFamily: "sans" })}>
         <Suspense>
           <ErrorBoundary>
             <Routes>

@@ -7,6 +7,7 @@ import { isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
 import cloudinary from "cloudinary";
 import { Readable } from "streamx";
+import { css } from "~styled-system/css";
 
 interface Interaction {
   id: number;
@@ -115,7 +116,7 @@ export default function Home() {
       <For each={interactions()}>
         {(interaction) => (
           <div>
-            <pre>{JSON.stringify(interaction, null, 2)}</pre>
+            <pre class={css({ fontFamily: "mono" })}>{JSON.stringify(interaction, null, 2)}</pre>
             <img src={interaction.photoURL} style={{ "max-width": "500px" }} />
           </div>
         )}

@@ -1,12 +1,14 @@
 {
   "name": "cutedog.app",
   "scripts": {
+    "prepare": "panda codegen",
     "dev": "solid-start dev",
     "build": "solid-start build",
     "start": "solid-start start"
   },
   "type": "module",
   "devDependencies": {
+    "@pandacss/dev": "^0.5.1",
     "@types/node": "^18.11.18",
     "@types/streamx": "^2.9.1",
     "esbuild": "^0.14.54",
@@ -14,7 +16,8 @@
     "solid-start-node": "^0.2.19",
     "solid-start-vercel": "^0.2.26",
     "typescript": "^4.9.4",
-    "vite": "^4.1.4"
+    "vite": "^4.1.4",
+    "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
     "@planetscale/database": "^1.8.0",
