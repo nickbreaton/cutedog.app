@@ -2,6 +2,8 @@ import { createHandler, renderAsync, StartServer } from "solid-start/entry-serve
 
 import "dotenv/config";
 import cloudinary from "cloudinary";
+import { parseCookie, redirect } from "solid-start";
+import { isAuthorizedRequest } from "./lib/auth";
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,4 +11,15 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export default createHandler(renderAsync((event) => <StartServer event={event} />));
+export default createHandler(
+  ({ forward }) => {
+    return async (event) => {
+      if (!isAuthorizedRequest(event.request)) {
+        return redirect("/login");
+      }
+
+      return forward(event);
+    };
+  },
+  renderAsync((event) => <StartServer event={event} />)
+);

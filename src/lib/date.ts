@@ -17,3 +17,9 @@ export function getLocalOffset(date = new Date()) {
 export function getUTCDateTime(date = new Date()) {
   return date.toISOString().slice(0, 19).replace("T", " ");
 }
+
+export function getDateOneYearFromNow() {
+  const currentDate = new Date();
+  const oneYearFromNow = new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate());
+  return oneYearFromNow;
+}
