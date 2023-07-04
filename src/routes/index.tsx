@@ -1,4 +1,4 @@
-import { Link, createRouteData, useRouteData } from "solid-start";
+import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
 import { For, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
 import { getLocalOffset, getUTCDateTime } from "~/lib/date";
@@ -9,6 +9,7 @@ import cloudinary from "cloudinary";
 import { Readable } from "streamx";
 import { css } from "~styled-system/css";
 import { assertEnv } from "~/lib/env";
+import { log } from "console";
 
 interface Interaction {
   id: number;
@@ -102,8 +103,64 @@ export default function Home() {
   const [, { Form: DeleteForm }] = createServerAction$(async (form: FormData) => {
     await getConnection().execute("delete from interactions");
   });
+
+  const [, exportRecords] = createServerAction$(async () => {
+    const { rows, fields } = await getConnection().execute("select * from interactions");
+    const rowsWithURL: InteractionResult[] = (rows as any[]).map((interaction: InteractionResult) => ({
+      ...interaction,
+      photoURL: interaction.photoID ? cloudinary.v2.url(interaction.photoID, { secure: true }) : undefined,
+    }));
+    return { rows: rowsWithURL, fields };
+  });
+
+  const [exporting, exportAll] = createRouteAction(async () => {
+    const name = "cutedog";
+
+    const recordsPromise = exportRecords();
+
+    const [{ default: JSZip }, { default: pLimit }] = await Promise.all([import("jszip"), import("p-limit")]);
+
+    const zip = new JSZip();
+    const root = zip.folder(name)!;
+
+    const records = await recordsPromise;
+    root.file("contents.json", JSON.stringify(await recordsPromise, null, 2));
+
+    const images = root.folder("images")!;
+    const limit = pLimit(10);
+
+    await Promise.all(
+      records.rows.map((row: any) =>
+        limit(async () => {
+          const interactionResult = row as InteractionResult;
+
+          if (!interactionResult.photoURL) {
+            return;
+          }
+
+          const res = await fetch(interactionResult.photoURL);
+          const ext = res.headers.get("content-type")!.replace("image/", "");
+
+          images.file(`${interactionResult.id}.${ext}`, await res.blob());
+        })
+      )
+    );
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${name}.zip`;
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
   return (
     <div>
+      <button onClick={() => exportAll()} disabled={exporting.pending}>
+        {exporting.pending ? "Exporting" : "Export"}
+      </button>
       <Form style={{ display: "grid", "max-width": "400px", gap: "20px" }}>
         new:
         <input type="text" name="quote" value="Cute dog" />
