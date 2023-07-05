@@ -86,8 +86,8 @@ export default function Home() {
         <For each={interactions()}>
           {(interaction) => (
             <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3" })}>
-              <pre class={css({ fontFamily: "mono" })}>{JSON.stringify(interaction, null, 2)}</pre>
-              <img src={interaction.photoURL} style={{ "max-width": "500px" }} />
+              <h2>{interaction.quotes.join("\n")}</h2>
+              <img src={interaction.photoURL} style={{ "max-width": "500px", width: "100%" }} />
             </div>
           )}
         </For>
