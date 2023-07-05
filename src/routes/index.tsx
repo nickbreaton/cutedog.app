@@ -10,8 +10,9 @@ import { Readable } from "streamx";
 import { css } from "~styled-system/css";
 import { assertEnv } from "~/lib/env";
 import { Interaction, InteractionResult } from "~/lib/types";
-import { createExportAction } from "~/lib/actions/export";
+import { exportAction } from "~/lib/actions/export";
 import { createUploadAction } from "~/lib/actions/upload";
+import { createLazyRouteAction } from "~/lib/start";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -57,7 +58,7 @@ export default function Home() {
   const coords = createCoordsStore();
 
   const [, { Form }] = createUploadAction();
-  const [exporting, exportAll] = createExportAction();
+  const [exporting, exportAll] = createLazyRouteAction(() => import("~/lib/actions/export"));
 
   const [, { Form: DeleteForm }] = createServerAction$(async (form: FormData) => {
     await getConnection().execute("delete from interactions");
