@@ -13,7 +13,7 @@ export default function Root() {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Body class={css({ fontFamily: "sans" })}>
+      <Body class={css({ fontFamily: "sans", bg: "gray.50" })}>
         <Suspense>
           <ErrorBoundary>
             <Routes>

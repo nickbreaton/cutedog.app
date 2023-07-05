@@ -12,6 +12,7 @@ import { assertEnv } from "~/lib/env";
 import { Interaction, InteractionResult } from "~/lib/types";
 import { uploadAction } from "~/lib/actions/upload";
 import { createLazyRouteAction } from "~/lib/start";
+import { grid, vstack } from "~styled-system/patterns";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -64,7 +65,7 @@ export default function Home() {
   });
 
   return (
-    <div>
+    <div class={css({ w: "xl", m: "auto", p: "1.5" })}>
       <button onClick={() => exportAll()} disabled={exporting.pending}>
         {exporting.pending ? "Exporting" : "Export"}
       </button>
@@ -81,14 +82,16 @@ export default function Home() {
         <button>Save</button>
       </Form>
       results:
-      <For each={interactions()}>
-        {(interaction) => (
-          <div>
-            <pre class={css({ fontFamily: "mono" })}>{JSON.stringify(interaction, null, 2)}</pre>
-            <img src={interaction.photoURL} style={{ "max-width": "500px" }} />
-          </div>
-        )}
-      </For>
+      <div class={grid({ gap: "5" })}>
+        <For each={interactions()}>
+          {(interaction) => (
+            <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3" })}>
+              <pre class={css({ fontFamily: "mono" })}>{JSON.stringify(interaction, null, 2)}</pre>
+              <img src={interaction.photoURL} style={{ "max-width": "500px" }} />
+            </div>
+          )}
+        </For>
+      </div>
       <DeleteForm>
         <button>🚨 DELETE ALL</button>
       </DeleteForm>
