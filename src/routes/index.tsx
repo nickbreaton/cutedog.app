@@ -74,7 +74,7 @@ export default function Home() {
       <button onClick={() => exportAll()} disabled={exporting.pending}>
         {exporting.pending ? "Exporting" : "Export"}
       </button>
-      <Form style={{ display: "grid", "max-width": "400px", gap: "20px" }}>
+      <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
         new:
         <input type="text" name="quote" value="Cute dog" />
         <input type="text" name="datetime" value={getUTCDateTime()} />
