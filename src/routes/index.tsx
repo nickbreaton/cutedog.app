@@ -14,6 +14,9 @@ import { uploadAction } from "~/lib/actions/upload";
 import { createLazyRouteAction } from "~/lib/start";
 import { grid, vstack } from "~styled-system/patterns";
 
+// TODO: needs to be included or lazy loaded route won't load, this will tree shake away
+import * as noop1 from "~/lib/actions/export";
+
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
     const results = await getConnection().execute(
