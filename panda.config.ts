@@ -12,7 +12,19 @@ export default defineConfig({
 
   // Useful for theme customization
   theme: {
-    extend: {},
+    extend: {
+      tokens: {
+        fonts: {
+          sans: {
+            value:
+              '"DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+          },
+          serif: {
+            value: '"DM Serif Text", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
+          },
+        },
+      },
+    },
   },
 
   // The output directory for your css system

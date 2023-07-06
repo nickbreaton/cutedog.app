@@ -1,7 +1,7 @@
 import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
 import { For, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
-import { getLocalOffset, getUTCDateTime } from "~/lib/date";
+import { getDateFromTimezoneOffset, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
@@ -16,7 +16,9 @@ import { grid, vstack } from "~styled-system/patterns";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
-    const results = await getConnection().execute("select id, datetime, quotes, lat, lon, photoID from interactions");
+    const results = await getConnection().execute(
+      "select id, datetime, timezone, quotes, lat, lon, photoID from interactions"
+    );
     const rows = results.rows as Interaction[];
 
     return rows.map((interaction) => ({
@@ -86,8 +88,11 @@ export default function Home() {
         <For each={interactions()}>
           {(interaction) => (
             <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3" })}>
-              <h2>{interaction.quotes.join("\n")}</h2>
-              <img src={interaction.photoURL} style={{ "max-width": "500px", width: "100%" }} />
+              <h2 class={css({ fontFamily: "serif", fontWeight: "bold", fontSize: "3xl" })}>
+                <For each={interaction.quotes}>{(quote) => <div>“{quote}”</div>}</For>
+              </h2>
+              <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
+              {/* <img src={interaction.photoURL} style={{ "max-width": "500px", width: "100%" }} /> */}
             </div>
           )}
         </For>
