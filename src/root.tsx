@@ -20,7 +20,7 @@ export default function Root() {
           rel="stylesheet"
         />
       </Head>
-      <Body class={css({ fontFamily: "sans", bg: "gray.50" })}>
+      <Body class={css({ fontFamily: "sans", bg: "gray.50", color: "text" })}>
         <Suspense>
           <ErrorBoundary>
             <Routes>

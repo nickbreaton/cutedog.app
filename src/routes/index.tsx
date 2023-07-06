@@ -70,7 +70,7 @@ export default function Home() {
   });
 
   return (
-    <div class={css({ w: "xl", m: "auto", p: "1.5" })}>
+    <div class={css({ maxW: "lg", m: "auto", p: "3" })}>
       <button onClick={() => exportAll()} disabled={exporting.pending}>
         {exporting.pending ? "Exporting" : "Export"}
       </button>

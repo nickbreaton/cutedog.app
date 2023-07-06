@@ -23,6 +23,9 @@ export default defineConfig({
             value: '"DM Serif Text", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
           },
         },
+        colors: {
+          text: { value: "#222" },
+        },
       },
     },
   },
