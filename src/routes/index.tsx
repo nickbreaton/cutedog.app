@@ -17,6 +17,10 @@ import { grid, vstack } from "~styled-system/patterns";
 // TODO: needs to be included or lazy loaded route won't load, this will tree shake away
 import * as noop1 from "~/lib/actions/export";
 
+function literal<T>(value: string): T {
+  return value as T;
+}
+
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
     const results = await getConnection().execute(
@@ -58,6 +62,10 @@ function createCoordsStore() {
   return store;
 }
 
+function balaneQuoteText(text: string) {
+  return text.replaceAll("I ", "I\u00A0");
+}
+
 export default function Home() {
   const interactions = useRouteData<typeof routeData>();
   const coords = createCoordsStore();
@@ -90,9 +98,18 @@ export default function Home() {
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (
-            <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3" })}>
-              <h2 class={css({ fontFamily: "serif", fontWeight: "bold", fontSize: "3xl" })}>
-                <For each={interaction.quotes}>{(quote) => <div>“{quote}”</div>}</For>
+            <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3", display: "grid", gap: "2" })}>
+              {/* TODO: font looking weird in Safari */}
+              <h2 class={css({ fontFamily: "serif", fontWeight: "black", fontSize: "3xl", letterSpacing: "wide" })}>
+                <For each={interaction.quotes}>
+                  {(quote) => (
+                    <div
+                      class={css({ paddingLeft: literal("0.8ch"), textIndent: literal("-0.8ch"), lineHeight: "snug" })}
+                    >
+                      “{balaneQuoteText(quote)}”
+                    </div>
+                  )}
+                </For>
               </h2>
               <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
               {/* <img src={interaction.photoURL} style={{ "max-width": "500px", width: "100%" }} /> */}
