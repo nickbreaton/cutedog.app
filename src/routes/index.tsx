@@ -104,7 +104,8 @@ export default function Home() {
                 <For each={interaction.quotes}>
                   {(quote) => (
                     <div
-                      class={css({ paddingLeft: literal("0.8ch"), textIndent: literal("-0.8ch"), lineHeight: "snug" })}
+                      style={{ "padding-left": "0.8ch", "text-indent": "-0.8ch" }}
+                      class={css({ lineHeight: "snug" })}
                     >
                       “{balaneQuoteText(quote)}”
                     </div>
