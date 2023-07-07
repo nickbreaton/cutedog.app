@@ -71,6 +71,18 @@ export default function Home() {
 
   return (
     <div class={css({ maxW: "lg", m: "auto", p: "3" })}>
+      <h1
+        class={css({
+          fontFamily: "serif",
+          fontWeight: "title",
+          fontSize: "xl",
+          pos: "sticky",
+          // top: "0",
+          paddingBlock: "2",
+        })}
+      >
+        “Cute dog”
+      </h1>
       <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
         new:
         <input type="text" name="quote" value="Cute dog" class={css({ w: "8/12" })} />
@@ -87,9 +99,19 @@ export default function Home() {
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (
-            <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3", display: "grid", gap: "2" })}>
+            <div
+              class={css({
+                bg: "white",
+                boxShadow: "sm",
+                borderRadius: "md",
+                p: "3",
+                display: "grid",
+                gap: "2",
+                cursor: "default",
+              })}
+            >
               {/* TODO: font looking weird in Safari */}
-              <h2 class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "3xl", display: "grid", gap: "2" })}>
+              <h2 class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "2" })}>
                 <For each={interaction.quotes}>
                   {(quote) => (
                     <div
