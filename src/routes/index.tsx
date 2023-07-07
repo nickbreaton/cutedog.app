@@ -1,6 +1,6 @@
 import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
-import { For, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
+import { For, JSX, PropsWithChildren, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
 import { getDateFromTimezoneOffset, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isDev, isServer } from "solid-js/web";
@@ -17,6 +17,7 @@ import { seedAction } from "~/lib/actions/seed";
 
 // TODO: needs to be included or lazy loaded route won't load, this will tree shake away
 import * as noop1 from "~/lib/actions/export";
+import { Content } from "~/lib/components/Content";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -69,20 +70,10 @@ export default function Home() {
 
   const [, { Form }] = createServerAction$(uploadAction);
 
+  const isStuck = () => true;
+
   return (
-    <div class={css({ maxW: "lg", m: "auto", p: "3" })}>
-      <h1
-        class={css({
-          fontFamily: "serif",
-          fontWeight: "title",
-          fontSize: "xl",
-          pos: "sticky",
-          // top: "0",
-          paddingBlock: "2",
-        })}
-      >
-        CuteDog.app {/* animate to “Cute Dog” on scroll*/}
-      </h1>
+    <Content>
       <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
         new:
         <input type="text" name="quote" value="Cute dog" class={css({ w: "8/12" })} />
@@ -95,7 +86,6 @@ export default function Home() {
         <input type="file" name="photo" class={css({ w: "8/12" })} />
         <button>Save</button>
       </Form>
-      results:
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (
@@ -134,6 +124,6 @@ export default function Home() {
           )}
         </For>
       </div>
-    </div>
+    </Content>
   );
 }

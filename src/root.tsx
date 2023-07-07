@@ -2,8 +2,10 @@
 import { Suspense } from "solid-js";
 import { A, Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title, Link } from "solid-start";
 import { css } from "~styled-system/css";
+import { Content } from "~/lib/components/Content";
 
 import "./root.css";
+import { Header } from "./lib/components/Header";
 
 export default function Root() {
   return (
@@ -23,9 +25,12 @@ export default function Root() {
       <Body class={css({ fontFamily: "sans", bg: "gray.50", color: "text" })}>
         <Suspense>
           <ErrorBoundary>
-            <Routes>
-              <FileRoutes />
-            </Routes>
+            <Header />
+            <div class={css({ paddingBlockStart: "3", paddingBlockEnd: "6" })}>
+              <Routes>
+                <FileRoutes />
+              </Routes>
+            </div>
           </ErrorBoundary>
         </Suspense>
         <Scripts />
