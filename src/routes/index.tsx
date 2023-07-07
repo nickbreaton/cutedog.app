@@ -12,7 +12,7 @@ import { assertEnv } from "~/lib/env";
 import { Interaction, InteractionResult } from "~/lib/types";
 import { uploadAction } from "~/lib/actions/upload";
 import { createLazyRouteAction } from "~/lib/start";
-import { grid, vstack } from "~styled-system/patterns";
+import { flex, grid, vstack } from "~styled-system/patterns";
 import { seedAction } from "~/lib/actions/seed";
 
 // TODO: needs to be included or lazy loaded route won't load, this will tree shake away
@@ -93,33 +93,35 @@ export default function Home() {
                 boxShadow: "sm",
                 borderRadius: "md",
                 p: "4",
-                display: "grid",
-                gap: "2",
                 cursor: "default",
+                display: "grid",
               })}
+              style={{ "grid-template-columns": "3fr 2fr" }}
             >
-              {/* TODO: font looking weird in Safari */}
-              <div
-                class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
-              >
-                <For each={interaction.quotes}>
-                  {(quote) => (
-                    <p
-                      style={{
-                        "--indent": "0.6ch",
-                        "padding-left": "var(--indent)",
-                        "text-indent": "calc(var(--indent)*-1)",
-                      }}
-                      class={css({ lineHeight: "snug" })}
-                    >
-                      “{balaneQuoteText(quote)}”
-                    </p>
-                  )}
-                </For>
+              <div class={css({ display: "flex", flexDir: "column", gap: "2" })}>
+                {/* TODO: font looking weird in Safari */}
+                <div
+                  class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
+                >
+                  <For each={interaction.quotes}>
+                    {(quote) => (
+                      <p
+                        style={{
+                          "--indent": "0.6ch",
+                          "padding-left": "var(--indent)",
+                          "text-indent": "calc(var(--indent)*-1)",
+                        }}
+                        class={css({ lineHeight: "snug" })}
+                      >
+                        “{balaneQuoteText(quote)}”
+                      </p>
+                    )}
+                  </For>
+                </div>
+                {/* TODO: fix time formatting based on TZ */}
+                <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
               </div>
-              {/* TODO: fix time formatting based on TZ */}
-              <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
-              {/* <img src={interaction.photoURL} class={css({ w: "full" })} /> */}
+              <img src={interaction.photoURL} class={css({ w: "full", borderRadius: "xs", boxShadow: "xs" })} />
             </article>
           )}
         </For>
