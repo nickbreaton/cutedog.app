@@ -3,7 +3,7 @@ import { createServerAction$, createServerData$ } from "solid-start/server";
 import { For, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
 import { getDateFromTimezoneOffset, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
-import { isServer } from "solid-js/web";
+import { isDev, isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
 import cloudinary from "cloudinary";
 import { Readable } from "streamx";
@@ -16,10 +16,6 @@ import { grid, vstack } from "~styled-system/patterns";
 
 // TODO: needs to be included or lazy loaded route won't load, this will tree shake away
 import * as noop1 from "~/lib/actions/export";
-
-function literal<T>(value: string): T {
-  return value as T;
-}
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -118,9 +114,11 @@ export default function Home() {
           )}
         </For>
       </div>
-      <DeleteForm>
-        <button>🚨 DELETE ALL</button>
-      </DeleteForm>
+      {isDev && (
+        <DeleteForm>
+          <button>🚨 DELETE ALL</button>
+        </DeleteForm>
+      )}
     </div>
   );
 }
