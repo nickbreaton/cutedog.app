@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { createRouteAction, useRouteData } from "solid-start";
+import { A, createRouteAction, useRouteData } from "solid-start";
 import server$, { createServerAction$, createServerData$ } from "solid-start/server";
 import exportAction from "~/lib/actions/export";
 import { seedAction } from "~/lib/actions/seed";
@@ -31,6 +31,7 @@ export default function Admin() {
   return (
     <div class={css({ display: "flex", flexDir: "column", padding: "5", gap: "10" })}>
       <div class={css({ display: "flex", gap: "10" })}>
+        <A href="/">🔙 Home</A>
         <ExportForm>
           <button>⬇️ Export</button>
         </ExportForm>
