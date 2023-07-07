@@ -6,14 +6,14 @@ import { Timezone } from "./types";
  *
  * @source https://stackoverflow.com/a/24500441
  */
-export function getLocalOffset(date = new Date()) {
+export function getLocalOffset(date = new Date()): Timezone {
   function z(n: any) {
     return (n < 10 ? "0" : "") + n;
   }
   var offset = date.getTimezoneOffset();
   var sign = offset < 0 ? "+" : "-";
   offset = Math.abs(offset);
-  return sign + z((offset / 60) | 0) + z(offset % 60);
+  return (sign + z((offset / 60) | 0) + z(offset % 60)) as Timezone;
 }
 
 export function getDateFromTimezoneOffset(utc: string, offset: Timezone) {

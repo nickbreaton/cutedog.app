@@ -13,6 +13,7 @@ import { Interaction, InteractionResult } from "~/lib/types";
 import { uploadAction } from "~/lib/actions/upload";
 import { createLazyRouteAction } from "~/lib/start";
 import { grid, vstack } from "~styled-system/patterns";
+import { seedAction } from "~/lib/actions/seed";
 
 // TODO: needs to be included or lazy loaded route won't load, this will tree shake away
 import * as noop1 from "~/lib/actions/export";
@@ -20,7 +21,7 @@ import * as noop1 from "~/lib/actions/export";
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
     const results = await getConnection().execute(
-      "select id, datetime, timezone, quotes, lat, lon, photoID from interactions"
+      "select id, datetime, timezone, quotes, lat, lon, photoID from interactions ORDER BY datetime DESC"
     );
     const rows = results.rows as Interaction[];
 
@@ -68,6 +69,7 @@ export default function Home() {
 
   const [, { Form }] = createServerAction$(uploadAction);
   const [exporting, exportAll] = createLazyRouteAction(() => import("~/lib/actions/export"));
+  const [, { Form: SeedForm }] = createServerAction$(seedAction);
 
   const [, { Form: DeleteForm }] = createServerAction$(async (form: FormData) => {
     await getConnection().execute("delete from interactions");
@@ -114,11 +116,16 @@ export default function Home() {
           )}
         </For>
       </div>
-      {isDev && (
-        <DeleteForm>
-          <button>🚨 DELETE ALL</button>
-        </DeleteForm>
-      )}
+      <div class={css({ display: "grid", gap: "3", margin: "3" })}>
+        <SeedForm>
+          <button>🌱 Seed DB</button>
+        </SeedForm>
+        {isDev && (
+          <DeleteForm>
+            <button>🚨 DELETE ALL</button>
+          </DeleteForm>
+        )}
+      </div>
     </div>
   );
 }
