@@ -1,6 +1,7 @@
 import { css } from "~styled-system/css";
 import { Content } from "./Content";
 import { createEffect, createSignal, onCleanup } from "solid-js";
+import { A } from "solid-start";
 
 export function Header() {
   const [hasScrolled, setScrolled] = createSignal(false);
@@ -36,15 +37,21 @@ export function Header() {
       }}
     >
       <Content>
-        <h1
+        <div
           class={css({
+            display: "flex",
+            justifyContent: "space-between",
             fontFamily: "serif",
             fontWeight: "title",
             fontSize: "xl",
           })}
         >
-          CuteDog.app {/* animate to “Cute Dog” on scroll*/}
-        </h1>
+          <h1 class={css({})}>
+            <A href="/">CuteDog.app {/* animate to “Cute Dog” on scroll*/}</A>
+          </h1>
+          {/* TODO: make contextual */}
+          <span class={css({ color: "gray.400", userSelect: "none", cursor: "default" })}>Lucy</span>
+        </div>
       </Content>
     </header>
   );

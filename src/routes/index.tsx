@@ -70,8 +70,6 @@ export default function Home() {
 
   const [, { Form }] = createServerAction$(uploadAction);
 
-  const isStuck = () => true;
-
   return (
     <Content>
       <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
