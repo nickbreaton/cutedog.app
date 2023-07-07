@@ -101,6 +101,7 @@ export default function Home() {
                   )}
                 </For>
               </h2>
+              {/* TODO: fix time formatting based on TZ */}
               <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
               {/* <img src={interaction.photoURL} style={{ "max-width": "500px", width: "100%" }} /> */}
             </div>
