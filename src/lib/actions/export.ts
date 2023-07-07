@@ -47,6 +47,7 @@ export default async function (form: FormData) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
+  // TODO: prepend sortable timestamp to end of file
   a.download = `${name}.zip`;
   a.click();
   a.remove();
