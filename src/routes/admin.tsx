@@ -1,8 +1,10 @@
 import { For } from "solid-js";
+import { isDev } from "solid-js/web";
 import { A, createRouteAction, useRouteData } from "solid-start";
 import server$, { createServerAction$, createServerData$ } from "solid-start/server";
 import exportAction from "~/lib/actions/export";
 import { seedAction } from "~/lib/actions/seed";
+import { Content } from "~/lib/components/Content";
 import { getConnection } from "~/lib/database";
 import { css } from "~styled-system/css";
 
@@ -29,25 +31,35 @@ export default function Admin() {
   });
 
   return (
-    <div class={css({ display: "flex", flexDir: "column", padding: "5", gap: "10" })}>
-      <div class={css({ display: "flex", gap: "10" })}>
-        <A href="/">🔙 Home</A>
-        <ExportForm>
-          <button>⬇️ Export</button>
-        </ExportForm>
-        <SeedForm>
-          <button>🌱 Seed DB</button>
-        </SeedForm>
-        <DeleteForm>
-          <button>🚨 DELETE ALL</button>
-        </DeleteForm>
+    <Content>
+      <div class={css({ display: "flex", flexDir: "column", paddingBlock: "5", gap: "10" })}>
+        {!isDev && (
+          <h1 class={css({ fontSize: "4xl", fontWeight: "bold", color: "red.500" })}>
+            CAUTION:
+            <br />
+            THIS IS PRODUCTION
+          </h1>
+        )}
+
+        <div class={css({ display: "flex", gap: "10" })}>
+          <A href="/">🔙 Home</A>
+          <ExportForm>
+            <button>⬇️ Export</button>
+          </ExportForm>
+          <SeedForm>
+            <button>🌱 Seed DB</button>
+          </SeedForm>
+          <DeleteForm>
+            <button>🚨 DELETE ALL</button>
+          </DeleteForm>
+        </div>
+        <div>
+          <strong>Interactions</strong>
+          <ul>
+            <For each={interactions()}>{(interaction) => <li>{interaction.quotes[0]}</li>}</For>
+          </ul>
+        </div>
       </div>
-      <div>
-        <strong>Interactions</strong>
-        <ul>
-          <For each={interactions()}>{(interaction) => <li>{interaction.quotes[0]}</li>}</For>
-        </ul>
-      </div>
-    </div>
+    </Content>
   );
 }
