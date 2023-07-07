@@ -81,7 +81,7 @@ export default function Home() {
           paddingBlock: "2",
         })}
       >
-        “Cute dog”
+        CuteDog.app {/* animate to “Cute Dog” on scroll*/}
       </h1>
       <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
         new:
