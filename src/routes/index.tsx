@@ -87,22 +87,24 @@ export default function Home() {
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (
-            <div
+            <article
               class={css({
                 bg: "white",
                 boxShadow: "sm",
                 borderRadius: "md",
-                p: "3",
+                p: "4",
                 display: "grid",
                 gap: "2",
                 cursor: "default",
               })}
             >
               {/* TODO: font looking weird in Safari */}
-              <h2 class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "2" })}>
+              <div
+                class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
+              >
                 <For each={interaction.quotes}>
                   {(quote) => (
-                    <div
+                    <p
                       style={{
                         "--indent": "0.6ch",
                         "padding-left": "var(--indent)",
@@ -111,14 +113,14 @@ export default function Home() {
                       class={css({ lineHeight: "snug" })}
                     >
                       “{balaneQuoteText(quote)}”
-                    </div>
+                    </p>
                   )}
                 </For>
-              </h2>
+              </div>
               {/* TODO: fix time formatting based on TZ */}
               <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
-              {/* <img src={interaction.photoURL} style={{ "max-width": "500px", width: "100%" }} /> */}
-            </div>
+              {/* <img src={interaction.photoURL} class={css({ w: "full" })} /> */}
+            </article>
           )}
         </For>
       </div>
