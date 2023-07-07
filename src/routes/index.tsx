@@ -89,11 +89,15 @@ export default function Home() {
           {(interaction) => (
             <div class={css({ bg: "white", boxShadow: "sm", borderRadius: "md", p: "3", display: "grid", gap: "2" })}>
               {/* TODO: font looking weird in Safari */}
-              <h2 class={css({ fontFamily: "serif", fontWeight: "black", fontSize: "3xl", letterSpacing: "wide" })}>
+              <h2 class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "3xl", display: "grid", gap: "2" })}>
                 <For each={interaction.quotes}>
                   {(quote) => (
                     <div
-                      style={{ "padding-left": "0.8ch", "text-indent": "-0.8ch" }}
+                      style={{
+                        "--indent": "0.6ch",
+                        "padding-left": "var(--indent)",
+                        "text-indent": "calc(var(--indent)*-1)",
+                      }}
                       class={css({ lineHeight: "snug" })}
                     >
                       “{balaneQuoteText(quote)}”

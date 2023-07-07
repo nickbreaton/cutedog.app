@@ -16,7 +16,7 @@ export default function Root() {
         <Link rel="preconnect" href="https://fonts.googleapis.com" />
         <Link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <Link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Text&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Nunito&display=swap"
           rel="stylesheet"
         />
       </Head>
