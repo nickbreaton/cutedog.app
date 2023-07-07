@@ -68,18 +68,9 @@ export default function Home() {
   const coords = createCoordsStore();
 
   const [, { Form }] = createServerAction$(uploadAction);
-  const [exporting, exportAll] = createLazyRouteAction(() => import("~/lib/actions/export"));
-  const [, { Form: SeedForm }] = createServerAction$(seedAction);
-
-  const [, { Form: DeleteForm }] = createServerAction$(async (form: FormData) => {
-    await getConnection().execute("delete from interactions");
-  });
 
   return (
     <div class={css({ maxW: "lg", m: "auto", p: "3" })}>
-      <button onClick={() => exportAll()} disabled={exporting.pending}>
-        {exporting.pending ? "Exporting" : "Export"}
-      </button>
       <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
         new:
         <input type="text" name="quote" value="Cute dog" class={css({ w: "8/12" })} />
@@ -115,16 +106,6 @@ export default function Home() {
             </div>
           )}
         </For>
-      </div>
-      <div class={css({ display: "grid", gap: "3", margin: "3" })}>
-        <SeedForm>
-          <button>🌱 Seed DB</button>
-        </SeedForm>
-        {isDev && (
-          <DeleteForm>
-            <button>🚨 DELETE ALL</button>
-          </DeleteForm>
-        )}
       </div>
     </div>
   );

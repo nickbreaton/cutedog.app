@@ -14,7 +14,7 @@ const exportRecords = server$(async () => {
   return { rows: rowsWithURL, fields };
 });
 
-export default async function () {
+export default async function (form: FormData) {
   const name = "cutedog";
 
   const zip = new JSZip();
