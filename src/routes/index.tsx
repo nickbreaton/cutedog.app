@@ -12,6 +12,8 @@ import { uploadAction } from "~/lib/actions/upload";
 import { grid } from "~styled-system/patterns";
 import { Content } from "~/lib/components/Content";
 import { getCityState } from "~/lib/maps";
+import { imageSize } from "image-size";
+import https from "node:https";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -28,11 +30,31 @@ export function routeData() {
           interaction.id,
         ]);
       }
+
+      const photoURL = interaction.photoID
+        ? cloudinary.v2.url(interaction.photoID, { secure: true, fetch_format: "auto", quality: "auto" })
+        : undefined;
+
+      if (photoURL && !interaction.cachedPhotoAspectRatio) {
+        const imageBuffer = await new Promise<Buffer>((res, rej) => {
+          https.get(photoURL, (response) => {
+            const chunks: Uint8Array[] = [];
+            response.on("data", (chunk) => chunks.push(chunk));
+            response.on("end", () => res(Buffer.concat(chunks)));
+            response.on("error", (error) => rej(error));
+          });
+        });
+        const { width, height } = imageSize(imageBuffer);
+        interaction.cachedPhotoAspectRatio = width! / height!;
+        await getConnection().execute("UPDATE interactions SET cachedPhotoAspectRatio = ? WHERE id = ?", [
+          interaction.cachedPhotoAspectRatio,
+          interaction.id,
+        ]);
+      }
+
       return {
         ...interaction,
-        photoURL: interaction.photoID
-          ? cloudinary.v2.url(interaction.photoID, { secure: true, fetch_format: "auto", quality: "auto" })
-          : undefined,
+        photoURL,
       };
     });
 

@@ -11,6 +11,7 @@ export interface Interaction {
   description?: string;
   cachedCity?: string;
   cachedState?: string;
+  cachedPhotoAspectRatio?: number;
 }
 
 export interface InteractionResult extends Interaction {
