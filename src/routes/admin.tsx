@@ -33,7 +33,7 @@ export default function Admin() {
   return (
     <Content>
       <div class={css({ display: "flex", flexDir: "column", paddingBlock: "5", gap: "10" })}>
-        {!isDev && (
+        {import.meta.env.PROD && (
           <h1 class={css({ fontSize: "4xl", fontWeight: "bold", color: "red.500" })}>
             CAUTION:
             <br />
