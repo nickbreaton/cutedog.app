@@ -1,12 +1,13 @@
 import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
-import { For, JSX, PropsWithChildren, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
+import { For, JSX, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
 import { getTimeZoneForIntl, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
 import cloudinary from "cloudinary";
 import { css } from "~styled-system/css";
+import { styled } from "~styled-system/jsx";
 import { Interaction, InteractionResult } from "~/lib/types";
 import { uploadAction } from "~/lib/actions/upload";
 import { grid } from "~styled-system/patterns";
@@ -96,49 +97,60 @@ export default function Home() {
                 borderColor: "gray.200",
                 borderTopWidth: "thin",
                 borderBottomWidth: "thin",
-                // boxShadow: "sm",
                 p: "4",
                 cursor: "default",
                 display: "grid",
+                gap: "2",
                 sm: {
                   borderWidth: "thin",
                   borderRadius: "md",
                 },
               })}
-              style={{ "grid-template-columns": "3fr 2fr" }}
             >
-              <div class={css({ display: "flex", flexDir: "column", gap: "2" })}>
-                {/* TODO: font looking weird in Safari */}
-                <div
-                  class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
-                >
-                  <For each={interaction.quotes}>
-                    {(quote) => (
-                      <p
-                        style={{
-                          "--indent": "0.6ch",
-                          "padding-left": "var(--indent)",
-                          "text-indent": "calc(var(--indent)*-1)",
-                        }}
-                        class={css({ lineHeight: "snug" })}
-                      >
-                        “{balaneQuoteText(quote)}”
-                      </p>
-                    )}
-                  </For>
-                </div>
-                <div>
-                  {new Intl.DateTimeFormat("en-US", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                    timeZone: getTimeZoneForIntl(interaction.timezone),
-                  }).format(new Date(`${interaction.datetime}+0000`))}
-                </div>
-                <div>
-                  {interaction.cachedCity}, {interaction.cachedState}
-                </div>
+              <div
+                class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
+              >
+                <For each={interaction.quotes}>
+                  {(quote) => (
+                    <p
+                      style={{
+                        "--indent": "0.6ch",
+                        "padding-left": "var(--indent)",
+                        "text-indent": "calc(var(--indent)*-1)",
+                      }}
+                      class={css({ lineHeight: "snug" })}
+                    >
+                      “{balaneQuoteText(quote)}”
+                    </p>
+                  )}
+                </For>
               </div>
-              {/* <img src={interaction.photoURL} class={css({ w: "full", borderRadius: "xs", boxShadow: "xs" })} /> */}
+              <div>
+                {new Intl.DateTimeFormat("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                  timeZone: getTimeZoneForIntl(interaction.timezone),
+                }).format(new Date(`${interaction.datetime}+0000`))}
+              </div>
+              <div>
+                {interaction.cachedCity}, {interaction.cachedState}
+              </div>
+              {interaction.photoURL && (
+                <img
+                  alt=""
+                  src={interaction.photoURL}
+                  style={{ "aspect-ratio": interaction.cachedPhotoAspectRatio }}
+                  class={css({
+                    w: "full",
+                    borderRadius: "md",
+                    maxWidth: "xs",
+                    borderStyle: "solid",
+                    borderWidth: "thin",
+                    borderColor: "gray.200",
+                  })}
+                  loading="lazy"
+                />
+              )}
             </article>
           )}
         </For>

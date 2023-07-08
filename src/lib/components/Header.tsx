@@ -32,7 +32,13 @@ export function Header() {
       // TODO: make it so it doesn't transition until after the initial determination of if we are scrolled
       style={{ transition: "box-shadow 100ms" }}
       classList={{
-        [css({ pos: "sticky", top: "0", paddingBlock: "3", background: "gray.50" })]: true,
+        [css({
+          pos: "sticky",
+          top: "0",
+          paddingBlock: "3",
+          background: "gray.50",
+          paddingInline: { base: "4", sm: "1" },
+        })]: true,
         [css({ boxShadow: "xs" })]: hasScrolled(),
       }}
     >
@@ -49,8 +55,6 @@ export function Header() {
           <h1 class={css({})}>
             <A href="/">CuteDog.app {/* animate to “Cute Dog” on scroll*/}</A>
           </h1>
-          {/* TODO: make contextual */}
-          <span class={css({ color: "gray.400", userSelect: "none", cursor: "default" })}>Lucy</span>
         </div>
       </Content>
     </header>
