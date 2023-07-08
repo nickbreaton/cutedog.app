@@ -38,6 +38,7 @@ export function Header() {
           paddingBlock: "3",
           background: "gray.50",
           paddingInline: { base: "4", sm: "1" },
+          zIndex: "1",
         })]: true,
         [css({ boxShadow: "xs" })]: hasScrolled(),
       }}

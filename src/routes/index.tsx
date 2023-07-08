@@ -17,7 +17,10 @@ import { imageSize } from "image-size";
 import https from "node:https";
 import { createCoordsStore } from "~/lib/signals/coords";
 import { token } from "~styled-system/tokens";
-import { HiSolidEllipsisHorizontal } from "solid-icons/hi";
+import { HiSolidEllipsisHorizontal, HiSolidCamera } from "solid-icons/hi";
+import { Card } from "~/lib/components/Card";
+import { InteractionPost } from "~/lib/components/InteractionPost";
+import { InteractionEditor } from "~/lib/components/InteractionEditor";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -66,10 +69,6 @@ export function routeData() {
   });
 }
 
-function balaneQuoteText(text: string) {
-  return text.replaceAll("I ", "I\u00A0");
-}
-
 export default function Home() {
   const interactions = useRouteData<typeof routeData>();
   const coords = createCoordsStore();
@@ -93,86 +92,11 @@ export default function Home() {
         <input type="file" name="photo" class={css({ w: "8/12" })} />
         <button>Save</button>
       </Form>
+      {/* <InteractionEditor /> */}
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (
-            <article
-              class={css({
-                bg: "white",
-                borderColor: "gray.200",
-                borderTopWidth: "thin",
-                borderBottomWidth: "thin",
-                p: "4",
-                cursor: "default",
-                display: "grid",
-                gap: "2",
-                sm: {
-                  borderWidth: "thin",
-                  borderRadius: "md",
-                },
-              })}
-            >
-              <div class={css({ display: "grid" })} style={{ "grid-template-columns": `auto ${token("sizes.8")}` }}>
-                <div
-                  class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "xl", display: "grid", gap: "3" })}
-                >
-                  <For each={interaction.quotes}>
-                    {(quote) => (
-                      <p
-                        style={{
-                          "--indent": "0.6ch",
-                          "padding-left": "var(--indent)",
-                          "text-indent": "calc(var(--indent)*-1)",
-                        }}
-                        class={css({ lineHeight: "snug" })}
-                      >
-                        “{balaneQuoteText(quote)}”
-                      </p>
-                    )}
-                  </For>
-                </div>
-                <button
-                  onclick={() => {
-                    if (confirm("Delete?")) {
-                      deleteInteraction(interaction.id);
-                    }
-                  }}
-                  class={css({
-                    cursor: "pointer",
-                    aspectRatio: "square",
-                    fontSize: "2xl",
-                    display: "grid",
-                    placeItems: "center",
-                    color: "gray.500",
-                  })}
-                >
-                  <HiSolidEllipsisHorizontal />
-                </button>
-              </div>
-              <div>
-                {new Intl.DateTimeFormat("en-US", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                  timeZone: getTimeZoneForIntl(interaction.timezone),
-                }).format(new Date(`${interaction.datetime}+0000`))}
-              </div>
-              <div>
-                {interaction.cachedCity}, {interaction.cachedState}
-              </div>
-              {interaction.photoURL && (
-                <img
-                  alt=""
-                  src={interaction.photoURL}
-                  style={{ "aspect-ratio": interaction.cachedPhotoAspectRatio }}
-                  class={css({
-                    w: "full",
-                    borderRadius: "md",
-                    maxWidth: "xs",
-                  })}
-                  loading="lazy"
-                />
-              )}
-            </article>
+            <InteractionPost interaction={interaction} onDelete={() => deleteInteraction(interaction.id)} />
           )}
         </For>
       </div>
