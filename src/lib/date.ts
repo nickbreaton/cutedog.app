@@ -16,19 +16,9 @@ export function getLocalOffset(date = new Date()): Timezone {
   return (sign + z((offset / 60) | 0) + z(offset % 60)) as Timezone;
 }
 
-export function getDateFromTimezoneOffset(utc: string, offset: Timezone) {
-  const direction = offset[0] === "-" ? -1 : 1;
-  const hours = parseInt(offset[1] + offset[2]);
-  const minutes = parseInt(offset[3] + offset[4]);
-
-  // -0400 === 240
-  // (4 hours, 0 minutes) === (4 * 60)
-
-  // 0100 === -60
-  // (1 hours, 0 minutes) === (1 * 60)
-
-  const totalMinutes = hours * minutes * direction * -1;
-  return new Date(new Date(`${utc}+0000`).getTime() + totalMinutes * 60 * 1000);
+export function getTimeZoneForIntl(offset: Timezone) {
+  const [sign, h, hh] = offset;
+  return `Etc/GMT${sign === "-" ? "+" : "-"}${parseInt(h + hh)}`;
 }
 
 export function getUTCDateTime(date = new Date()) {

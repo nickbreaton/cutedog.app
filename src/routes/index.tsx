@@ -1,7 +1,7 @@
 import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
 import { For, JSX, PropsWithChildren, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
-import { getDateFromTimezoneOffset, getLocalOffset, getUTCDateTime } from "~/lib/date";
+import { getTimeZoneForIntl, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
@@ -121,8 +121,13 @@ export default function Home() {
                     )}
                   </For>
                 </div>
-                {/* TODO: fix time formatting based on TZ */}
-                <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
+                <div>
+                  {new Intl.DateTimeFormat("en-US", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                    timeZone: getTimeZoneForIntl(interaction.timezone),
+                  }).format(new Date(`${interaction.datetime}+0000`))}
+                </div>
                 <div>
                   {interaction.cachedCity}, {interaction.cachedState}
                 </div>
