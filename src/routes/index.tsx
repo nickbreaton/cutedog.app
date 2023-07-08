@@ -144,9 +144,6 @@ export default function Home() {
                     w: "full",
                     borderRadius: "md",
                     maxWidth: "xs",
-                    borderStyle: "solid",
-                    borderWidth: "thin",
-                    borderColor: "gray.200",
                   })}
                   loading="lazy"
                 />
