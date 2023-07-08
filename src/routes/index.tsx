@@ -114,7 +114,7 @@ export default function Home() {
             >
               <div class={css({ display: "grid" })} style={{ "grid-template-columns": `auto ${token("sizes.8")}` }}>
                 <div
-                  class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
+                  class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "xl", display: "grid", gap: "3" })}
                 >
                   <For each={interaction.quotes}>
                     {(quote) => (
