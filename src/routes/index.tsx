@@ -93,11 +93,17 @@ export default function Home() {
             <article
               class={css({
                 bg: "white",
-                boxShadow: "sm",
-                borderRadius: "md",
+                borderColor: "gray.200",
+                borderTopWidth: "thin",
+                borderBottomWidth: "thin",
+                // boxShadow: "sm",
                 p: "4",
                 cursor: "default",
                 display: "grid",
+                sm: {
+                  borderWidth: "thin",
+                  borderRadius: "md",
+                },
               })}
               style={{ "grid-template-columns": "3fr 2fr" }}
             >
@@ -132,7 +138,7 @@ export default function Home() {
                   {interaction.cachedCity}, {interaction.cachedState}
                 </div>
               </div>
-              <img src={interaction.photoURL} class={css({ w: "full", borderRadius: "xs", boxShadow: "xs" })} />
+              {/* <img src={interaction.photoURL} class={css({ w: "full", borderRadius: "xs", boxShadow: "xs" })} /> */}
             </article>
           )}
         </For>
