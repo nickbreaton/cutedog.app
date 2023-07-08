@@ -32,6 +32,9 @@ dependencies:
   p-limit:
     specifier: ^4.0.0
     version: 4.0.0
+  solid-icons:
+    specifier: ^1.0.11
+    version: 1.0.11(solid-js@1.7.7)
   solid-js:
     specifier: ^1.7.7
     version: 1.7.7
@@ -6142,6 +6145,15 @@ packages:
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
     dev: true
+
+  /solid-icons@1.0.11(solid-js@1.7.7):
+    resolution: {integrity: sha512-shEL5Otrl73LPZukpanJKi6ISnQhpIvhqqAb8haKyCGrixHOYC6yGfNkSE7jpkKSikZ0rGtSMRiFETRrec2Uzw==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      solid-js: '*'
+    dependencies:
+      solid-js: 1.7.7
+    dev: false
 
   /solid-js@1.7.7:
     resolution: {integrity: sha512-SPdYVke/Z6Za24PBTbULyQYPrhGO1ZbPany76atO2zF2dmYn2pCotbsw1JtlgWnr9dK2JbwPGnA3ODTGPLhZNw==}

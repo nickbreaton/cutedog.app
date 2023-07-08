@@ -16,6 +16,8 @@ import { getCityState } from "~/lib/maps";
 import { imageSize } from "image-size";
 import https from "node:https";
 import { createCoordsStore } from "~/lib/signals/coords";
+import { token } from "~styled-system/tokens";
+import { HiSolidEllipsisHorizontal } from "solid-icons/hi";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
@@ -73,6 +75,9 @@ export default function Home() {
   const coords = createCoordsStore();
 
   const [, { Form }] = createServerAction$(uploadAction);
+  const [, deleteInteraction] = createServerAction$(async (id: number) => {
+    await getConnection().execute("DELETE FROM interactions WHERE id = ?", [id]);
+  });
 
   return (
     <Content>
@@ -107,23 +112,42 @@ export default function Home() {
                 },
               })}
             >
-              <div
-                class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
-              >
-                <For each={interaction.quotes}>
-                  {(quote) => (
-                    <p
-                      style={{
-                        "--indent": "0.6ch",
-                        "padding-left": "var(--indent)",
-                        "text-indent": "calc(var(--indent)*-1)",
-                      }}
-                      class={css({ lineHeight: "snug" })}
-                    >
-                      “{balaneQuoteText(quote)}”
-                    </p>
-                  )}
-                </For>
+              <div class={css({ display: "grid" })} style={{ "grid-template-columns": `auto ${token("sizes.8")}` }}>
+                <div
+                  class={css({ fontFamily: "serif", fontWeight: "title", fontSize: "2xl", display: "grid", gap: "3" })}
+                >
+                  <For each={interaction.quotes}>
+                    {(quote) => (
+                      <p
+                        style={{
+                          "--indent": "0.6ch",
+                          "padding-left": "var(--indent)",
+                          "text-indent": "calc(var(--indent)*-1)",
+                        }}
+                        class={css({ lineHeight: "snug" })}
+                      >
+                        “{balaneQuoteText(quote)}”
+                      </p>
+                    )}
+                  </For>
+                </div>
+                <button
+                  onclick={() => {
+                    if (confirm("Delete?")) {
+                      deleteInteraction(interaction.id);
+                    }
+                  }}
+                  class={css({
+                    cursor: "pointer",
+                    aspectRatio: "square",
+                    fontSize: "2xl",
+                    display: "grid",
+                    placeItems: "center",
+                    color: "gray.500",
+                  })}
+                >
+                  <HiSolidEllipsisHorizontal />
+                </button>
               </div>
               <div>
                 {new Intl.DateTimeFormat("en-US", {
