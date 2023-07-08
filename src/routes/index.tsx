@@ -3,35 +3,40 @@ import { createServerAction$, createServerData$ } from "solid-start/server";
 import { For, JSX, PropsWithChildren, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
 import { getDateFromTimezoneOffset, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
-import { isDev, isServer } from "solid-js/web";
+import { isServer } from "solid-js/web";
 import { getConnection } from "~/lib/database";
 import cloudinary from "cloudinary";
-import { Readable } from "streamx";
 import { css } from "~styled-system/css";
-import { assertEnv } from "~/lib/env";
 import { Interaction, InteractionResult } from "~/lib/types";
 import { uploadAction } from "~/lib/actions/upload";
-import { createLazyRouteAction } from "~/lib/start";
-import { flex, grid, vstack } from "~styled-system/patterns";
-import { seedAction } from "~/lib/actions/seed";
-
-// TODO: needs to be included or lazy loaded route won't load, this will tree shake away
-import * as noop1 from "~/lib/actions/export";
+import { grid } from "~styled-system/patterns";
 import { Content } from "~/lib/components/Content";
+import { getCityState } from "~/lib/maps";
 
 export function routeData() {
   return createServerData$(async (): Promise<InteractionResult[]> => {
-    const results = await getConnection().execute(
-      "select id, datetime, timezone, quotes, lat, lon, photoID from interactions ORDER BY datetime DESC"
-    );
+    const results = await getConnection().execute("select * from interactions ORDER BY datetime DESC");
     const rows = results.rows as Interaction[];
+    const interactionResultsPromises = rows.map(async (interaction) => {
+      if (!interaction.cachedCity || !interaction.cachedState) {
+        const { city, state } = await getCityState(interaction.lat, interaction.lon);
+        interaction.cachedCity = city;
+        interaction.cachedState = state;
+        await getConnection().execute("UPDATE interactions SET cachedCity = ?, cachedState = ? WHERE id = ?", [
+          interaction.cachedCity,
+          interaction.cachedState,
+          interaction.id,
+        ]);
+      }
+      return {
+        ...interaction,
+        photoURL: interaction.photoID
+          ? cloudinary.v2.url(interaction.photoID, { secure: true, fetch_format: "auto", quality: "auto" })
+          : undefined,
+      };
+    });
 
-    return rows.map((interaction) => ({
-      ...interaction,
-      photoURL: interaction.photoID
-        ? cloudinary.v2.url(interaction.photoID, { secure: true, fetch_format: "auto", quality: "auto" })
-        : undefined,
-    }));
+    return Promise.all(interactionResultsPromises);
   });
 }
 
@@ -120,6 +125,9 @@ export default function Home() {
                 </div>
                 {/* TODO: fix time formatting based on TZ */}
                 <div>{getDateFromTimezoneOffset(interaction.datetime, interaction.timezone).toLocaleString()}</div>
+                <div>
+                  {interaction.cachedCity}, {interaction.cachedState}
+                </div>
               </div>
               <img src={interaction.photoURL} class={css({ w: "full", borderRadius: "xs", boxShadow: "xs" })} />
             </article>

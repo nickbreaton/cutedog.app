@@ -9,6 +9,8 @@ export interface Interaction {
   lon: number;
   photoID?: string;
   description?: string;
+  cachedCity?: string;
+  cachedState?: string;
 }
 
 export interface InteractionResult extends Interaction {

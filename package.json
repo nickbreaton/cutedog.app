@@ -20,6 +20,7 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.3.32",
     "@planetscale/database": "^1.8.0",
     "@solidjs/meta": "^0.28.5",
     "@solidjs/router": "^0.8.2",
