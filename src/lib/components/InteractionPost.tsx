@@ -77,6 +77,7 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
                 w: "full",
                 borderRadius: "md",
                 maxWidth: "xs",
+                backgroundColor: "neutral.100",
               })}
               loading="lazy"
             />

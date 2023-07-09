@@ -1,6 +1,6 @@
 import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
-import { For, JSX, createComponent, createComputed, createEffect, onCleanup } from "solid-js";
+import { For, JSX, createComputed, createEffect, onCleanup } from "solid-js";
 import { getTimeZoneForIntl, getLocalOffset, getUTCDateTime } from "~/lib/date";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
@@ -71,28 +71,15 @@ export function routeData() {
 
 export default function Home() {
   const interactions = useRouteData<typeof routeData>();
-  const coords = createCoordsStore();
 
-  const [, addInteraction] = createServerAction$(uploadAction);
+  const [adding, addInteraction] = createServerAction$(uploadAction);
   const [, deleteInteraction] = createServerAction$(async (id: number) => {
     await getConnection().execute("DELETE FROM interactions WHERE id = ?", [id]);
   });
 
   return (
     <Content>
-      {/* <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
-        new:
-        <input type="text" name="quote" value="Cute dog" class={css({ w: "8/12" })} />
-        <input type="text" name="datetime" value={getUTCDateTime()} class={css({ w: "8/12" })} />
-        <input type="text" name="timezone" value={getLocalOffset()} class={css({ w: "8/12" })} />
-        <div>
-          <input type="text" name="lat" value={coords.lat} />
-          <input type="text" name="lon" value={coords.lon} />
-        </div>
-        <input type="file" name="photo" class={css({ w: "8/12" })} />
-        <button>Save</button>
-      </Form> */}
-      <InteractionEditor onSave={addInteraction} />
+      <InteractionEditor onSave={addInteraction} saving={adding.pending} />
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (
