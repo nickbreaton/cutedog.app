@@ -73,14 +73,14 @@ export default function Home() {
   const interactions = useRouteData<typeof routeData>();
   const coords = createCoordsStore();
 
-  const [, { Form }] = createServerAction$(uploadAction);
+  const [, addInteraction] = createServerAction$(uploadAction);
   const [, deleteInteraction] = createServerAction$(async (id: number) => {
     await getConnection().execute("DELETE FROM interactions WHERE id = ?", [id]);
   });
 
   return (
     <Content>
-      <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
+      {/* <Form style={{ display: "grid", "max-width": "200px", gap: "20px" }}>
         new:
         <input type="text" name="quote" value="Cute dog" class={css({ w: "8/12" })} />
         <input type="text" name="datetime" value={getUTCDateTime()} class={css({ w: "8/12" })} />
@@ -91,8 +91,8 @@ export default function Home() {
         </div>
         <input type="file" name="photo" class={css({ w: "8/12" })} />
         <button>Save</button>
-      </Form>
-      {/* <InteractionEditor /> */}
+      </Form> */}
+      <InteractionEditor onSave={addInteraction} />
       <div class={grid({ gap: "5" })}>
         <For each={interactions()}>
           {(interaction) => (

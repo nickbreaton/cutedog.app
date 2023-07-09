@@ -6,7 +6,7 @@ export function Card(props: { children: JSX.Element }) {
     <article
       class={css({
         bg: "white",
-        borderColor: "gray.200",
+        borderColor: "neutral.200",
         borderTopWidth: "thin",
         borderBottomWidth: "thin",
         p: "4",

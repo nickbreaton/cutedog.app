@@ -7,7 +7,9 @@ export function Content(props: { children: JSX.Element }) {
     <div
       class={css({
         m: "auto",
+        paddingInline: "4",
         sm: {
+          paddingInline: "0",
           maxW: "lg",
         },
       })}

@@ -22,7 +22,7 @@ export default function Root() {
           rel="stylesheet"
         />
       </Head>
-      <Body class={css({ fontFamily: "sans", bg: "gray.50", color: "text" })}>
+      <Body class={css({ fontFamily: "sans", bg: "neutral.50", color: "text" })}>
         <Suspense>
           <ErrorBoundary>
             <Header />
