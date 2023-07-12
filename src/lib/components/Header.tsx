@@ -1,4 +1,3 @@
-import { css } from "~styled-system/css";
 import { Content } from "./Content";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { A } from "solid-start";
@@ -30,29 +29,13 @@ export function Header() {
   return (
     <header
       // TODO: make it so it doesn't transition until after the initial determination of if we are scrolled
-      style={{ transition: "box-shadow 100ms" }}
-      classList={{
-        [css({
-          pos: "sticky",
-          top: "0",
-          paddingBlock: "3",
-          background: "neutral.50",
-          zIndex: "1",
-        })]: true,
-        [css({ boxShadow: "xs" })]: hasScrolled(),
-      }}
+      class={`sticky top-0 py-3 px-4 bg-neutral-50 z-10 [transition:box-shadow_100ms] ${
+        hasScrolled() ? "shadow-sm" : ""
+      }`}
     >
       <Content>
-        <div
-          class={css({
-            display: "flex",
-            justifyContent: "space-between",
-            fontFamily: "serif",
-            fontWeight: "title",
-            fontSize: "xl",
-          })}
-        >
-          <h1 class={css({})}>
+        <div class="flex justify-between font-serif font-title text-xl">
+          <h1>
             <A href="/">CuteDog.app {/* animate to “Cute Dog” on scroll*/}</A>
           </h1>
         </div>

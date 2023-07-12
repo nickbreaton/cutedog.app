@@ -1,7 +1,6 @@
 // @refresh reload
 import { Suspense } from "solid-js";
 import { A, Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title, Link } from "solid-start";
-import { css } from "~styled-system/css";
 import { Content } from "~/lib/components/Content";
 
 import "./root.css";
@@ -22,11 +21,11 @@ export default function Root() {
           rel="stylesheet"
         />
       </Head>
-      <Body class={css({ fontFamily: "sans", bg: "neutral.50", color: "text" })}>
+      <Body class="font-sans bg-neutral-50">
         <Suspense>
           <ErrorBoundary>
             <Header />
-            <div class={css({ paddingBlockStart: "3", paddingBlockEnd: "6" })}>
+            <div class="px-4">
               <Routes>
                 <FileRoutes />
               </Routes>

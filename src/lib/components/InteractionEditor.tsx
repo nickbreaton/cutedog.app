@@ -1,5 +1,3 @@
-import { css } from "~styled-system/css";
-import { Card } from "./Card";
 import { HiSolidCamera, HiSolidBars3CenterLeft, HiSolidXMark } from "solid-icons/hi";
 import { createComputed, createEffect, createSignal, onCleanup } from "solid-js";
 import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
@@ -40,46 +38,19 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
           dialog()!.showModal();
           disableBodyScroll(dialog()!);
         }}
-        class={css({
-          pos: "fixed",
-          right: "7",
-          bottom: "7",
-          background: "blue.500",
-          color: "white",
-          width: "14",
-          aspectRatio: "square",
-          borderRadius: "full",
-          boxShadow: "lg",
-          cursor: "pointer",
-          outline: "none",
-          fontSize: "3xl",
-          display: "grid",
-          placeItems: "center",
-        })}
+        class="
+          fixed right-7 bottom-7 bg-blue-500 text-white w-14 aspect-square rounded-full
+          shadow-lg cursor-pointer outline-none text-3xl grid place-items-center
+        "
       >
         <HiSolidBars3CenterLeft />
       </button>
       <dialog
         ref={setDialog}
-        class={css({
-          "&:modal": {
-            width: "full",
-            maxWidth: "full",
-            height: "full",
-            maxHeight: "full",
-            m: "auto",
-            paddingInline: "4",
-            sm: {
-              boxShadow: "lg",
-              borderRadius: "md",
-              margin: "auto",
-              w: "xl",
-              maxW: "11/12",
-              maxHeight: "lg",
-              paddingInline: "6",
-            },
-          },
-        })}
+        class="
+          modal:w-full modal:max-w-full modal:h-full modal:max-h-full modal:m-auto modal:px-4
+          modal:sm:shadow-lg modal:sm:rounded-md modal:sm:max-w-xl modal:sm:w-full modal:sm:max-h-[theme(maxWidth.xl)] modal:sm:px-6
+        "
       >
         <form
           onSubmit={async (event) => {
@@ -103,7 +74,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
             window.scrollTo(0, 0);
           }}
         >
-          <div class={css({ paddingBlock: "4", display: "flex", justifyContent: "space-between" })}>
+          <div class="py-4 flex justify-between">
             <button
               type="button"
               onclick={() => {
@@ -116,18 +87,9 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
             </button>
             <button>{props.saving ? "Uploading..." : "Save"}</button>
           </div>
-          <div class={css({ display: "grid", gap: "8", paddingBlock: "4" })}>
-            <div
-              class={css({
-                fontFamily: "serif",
-                fontWeight: "title",
-                fontSize: "xl",
-                display: "grid",
-                maxW: "full",
-                overflowX: "hidden",
-              })}
-            >
-              <div aria-hidden class={css({ gridArea: "1/1", visibility: "hidden", whiteSpace: "pre-wrap" })}>
+          <div class="grid gap-8 py-4">
+            <div class="font-serif font-title text-xl grid max-w overflow-x-hidden">
+              <div aria-hidden class="[grid-area:1/1] invisible whitespace-pre-wrap">
                 {/*
                   NOTE: This is not currently necessary since new lines are being restricted,
                   but in the case that changes this hack is needed to keep this div mirroring the backing text area.
@@ -144,25 +106,15 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                   target.value = target.value.replaceAll("\n", "");
                   setQuote(target.value);
                 }}
-                class={css({
-                  resize: "none",
-                  outline: "none",
-                  gridArea: "1/1",
-                  height: "full",
-                  maxWidth: "full",
-                  wordWrap: "break-word",
-                  _placeholder: {
-                    color: "neutral.400",
-                  },
-                })}
+                class="resize-none outline-none [grid-area:1/1] h-full max-w-full break-words placeholder:text-neutral-400"
               />
             </div>
             {photoPreviewURL() ? (
-              <div class={css({ pos: "relative", width: "full", maxWidth: "xs" })}>
-                <img alt="" src={photoPreviewURL()} class={css({ borderRadius: "md" })} />
+              <div class="relative w-full max-w-xs">
+                <img alt="" src={photoPreviewURL()} class="rounded-md" />
                 <button
                   type="button"
-                  class={css({ pos: "absolute", top: "3", right: "3", color: "white" })}
+                  class="ablute top-3 right-3 text-white"
                   onclick={() => {
                     setPhoto(undefined);
                   }}
@@ -171,34 +123,9 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                 </button>
               </div>
             ) : (
-              <label
-                class={css({
-                  w: "48",
-                  aspectRatio: "square",
-                  background: "neutral.100",
-                  borderWidth: "thin",
-                  borderColor: "neutral.200",
-                  borderRadius: "md",
-                  pos: "relative",
-                  zIndex: "0",
-                  cursor: "pointer",
-                  display: "grid",
-                  placeItems: "center",
-                  _placeholder: {
-                    color: "neutral.400",
-                  },
-                })}
-              >
-                <div
-                  class={css({
-                    display: "grid",
-                    justifyItems: "center",
-                    fontWeight: "bold",
-                    color: "neutral.400",
-                    gap: "1",
-                  })}
-                >
-                  <div class={css({ fontSize: "2xl" })}>
+              <label class="w-48 aspect-square bg-neutral-100 border border-neutral-200 rounded-md relative z-0 cursor-pointer grid place-items-center placeholder:text-neutral-400">
+                <div class="grid justify-center font-title text-neutral-400 gap-1">
+                  <div class="text-2xl flex justify-center">
                     <HiSolidCamera />
                   </div>
                   <div>
@@ -209,7 +136,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                       oninput={(event) => {
                         setPhoto(() => event.target.files?.[0]);
                       }}
-                      class={css({ opacity: "0", appearance: "none", pos: "absolute", inset: "0", cursor: "pointer" })}
+                      class="opacity-0 appearance-none absolute inset-0 cursor-pointer"
                     />
                   </div>
                 </div>

@@ -6,7 +6,6 @@ import exportAction from "~/lib/actions/export";
 import { seedAction } from "~/lib/actions/seed";
 import { Content } from "~/lib/components/Content";
 import { getConnection } from "~/lib/database";
-import { css } from "~styled-system/css";
 
 export function routeData() {
   return createServerData$(async () => {
@@ -32,16 +31,16 @@ export default function Admin() {
 
   return (
     <Content>
-      <div class={css({ display: "flex", flexDir: "column", paddingBlock: "5", gap: "10" })}>
+      <div class="flex flex-col py-5 gap-10">
         {import.meta.env.PROD && (
-          <h1 class={css({ fontSize: "4xl", fontWeight: "bold", color: "red.500" })}>
+          <h1 class="text-4xl font-title text-red-500">
             CAUTION:
             <br />
             THIS IS PRODUCTION
           </h1>
         )}
 
-        <div class={css({ display: "flex", gap: "10" })}>
+        <div class="flex gap-10">
           <A href="/">🔙 Home</A>
           <ExportForm>
             <button>⬇️ Export</button>

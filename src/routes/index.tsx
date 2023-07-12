@@ -1,24 +1,14 @@
-import { Link, createRouteAction, createRouteData, useRouteData } from "solid-start";
+import { useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
-import { For, JSX, createComputed, createEffect, onCleanup } from "solid-js";
-import { getTimeZoneForIntl, getLocalOffset, getUTCDateTime } from "~/lib/date";
-import { createStore } from "solid-js/store";
-import { isServer } from "solid-js/web";
+import { For } from "solid-js";
 import { getConnection } from "~/lib/database";
 import cloudinary from "cloudinary";
-import { css } from "~styled-system/css";
-import { styled } from "~styled-system/jsx";
 import { Interaction, InteractionResult } from "~/lib/types";
 import { uploadAction } from "~/lib/actions/upload";
-import { grid } from "~styled-system/patterns";
 import { Content } from "~/lib/components/Content";
 import { getCityState } from "~/lib/maps";
 import { imageSize } from "image-size";
 import https from "node:https";
-import { createCoordsStore } from "~/lib/signals/coords";
-import { token } from "~styled-system/tokens";
-import { HiSolidEllipsisHorizontal, HiSolidCamera } from "solid-icons/hi";
-import { Card } from "~/lib/components/Card";
 import { InteractionPost } from "~/lib/components/InteractionPost";
 import { InteractionEditor } from "~/lib/components/InteractionEditor";
 
@@ -80,7 +70,7 @@ export default function Home() {
   return (
     <Content>
       <InteractionEditor onSave={addInteraction} saving={adding.pending} />
-      <div class={grid({ gap: "5" })}>
+      <div class="grid gap-5">
         <For each={interactions()}>
           {(interaction) => (
             <InteractionPost interaction={interaction} onDelete={() => deleteInteraction(interaction.id)} />

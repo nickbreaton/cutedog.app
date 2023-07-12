@@ -1,8 +1,5 @@
-import { css } from "~styled-system/css";
-import { Card } from "./Card";
 import { InteractionResult } from "../types";
 import { For } from "solid-js";
-import { token } from "~styled-system/tokens";
 import { HiSolidEllipsisHorizontal } from "solid-icons/hi";
 import { getTimeZoneForIntl } from "../date";
 
@@ -12,78 +9,49 @@ function balaneQuoteText(text: string) {
 
 export const InteractionPost = (props: { interaction: InteractionResult; onDelete: () => void }) => {
   return (
-    <div class={css({ marginInline: { base: "-4", sm: "0" } })}>
-      <Card>
-        <div class={css({ display: "grid", gap: "2" })}>
-          <div class={css({ display: "grid" })} style={{ "grid-template-columns": `auto ${token("sizes.8")}` }}>
-            <div
-              class={css({
-                fontFamily: "serif",
-                fontWeight: "title",
-                fontSize: "xl",
-                display: "grid",
-                gap: "3",
-              })}
-            >
-              <For each={props.interaction.quotes}>
-                {(quote) => (
-                  <p
-                    style={{
-                      "--indent": "0.6ch",
-                      "padding-left": "var(--indent)",
-                      "text-indent": "calc(var(--indent)*-1)",
-                    }}
-                    class={css({ lineHeight: "snug" })}
-                  >
-                    “{balaneQuoteText(quote)}”
-                  </p>
-                )}
-              </For>
-            </div>
-            <button
-              onclick={() => {
-                if (confirm("Delete?")) {
-                  props.onDelete();
-                }
-              }}
-              class={css({
-                cursor: "pointer",
-                aspectRatio: "square",
-                fontSize: "2xl",
-                display: "grid",
-                placeItems: "center",
-                color: "neutral.500",
-              })}
-            >
-              <HiSolidEllipsisHorizontal />
-            </button>
+    <article class="-mx-4 sm:mx-0 bg-white border-neutral-200 border-y p-4 cursor-default sm:border-x sm:rounded-md">
+      <div class="grid gap-2">
+        <div class="grid grid-cols-[auto,theme(spacing.8)]">
+          <div class="font-serif font-title text-xl grid gap-3">
+            <For each={props.interaction.quotes}>
+              {(quote) => (
+                <p class="leading-snug [--indent:0.6ch] pl-[var(--indent)] indent-[calc(var(--indent)*-1)]">
+                  “{balaneQuoteText(quote)}”
+                </p>
+              )}
+            </For>
           </div>
-          <div>
-            {new Intl.DateTimeFormat("en-US", {
-              dateStyle: "medium",
-              timeStyle: "short",
-              timeZone: getTimeZoneForIntl(props.interaction.timezone),
-            }).format(new Date(`${props.interaction.datetime}+0000`))}
-          </div>
-          <div>
-            {props.interaction.cachedCity}, {props.interaction.cachedState}
-          </div>
-          {props.interaction.photoURL && (
-            <img
-              alt=""
-              src={props.interaction.photoURL}
-              style={{ "aspect-ratio": props.interaction.cachedPhotoAspectRatio }}
-              class={css({
-                w: "full",
-                borderRadius: "md",
-                maxWidth: "xs",
-                backgroundColor: "neutral.100",
-              })}
-              loading="lazy"
-            />
-          )}
+          <button
+            class="cursor-pointer aspect-square text-2xl grid place-items-center text-neutral-500"
+            onclick={() => {
+              if (confirm("Delete?")) {
+                props.onDelete();
+              }
+            }}
+          >
+            <HiSolidEllipsisHorizontal />
+          </button>
         </div>
-      </Card>
-    </div>
+        <div>
+          {new Intl.DateTimeFormat("en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+            timeZone: getTimeZoneForIntl(props.interaction.timezone),
+          }).format(new Date(`${props.interaction.datetime}+0000`))}
+        </div>
+        <div>
+          {props.interaction.cachedCity}, {props.interaction.cachedState}
+        </div>
+        {props.interaction.photoURL && (
+          <img
+            alt=""
+            src={props.interaction.photoURL}
+            style={{ "aspect-ratio": props.interaction.cachedPhotoAspectRatio }}
+            class="w-full rounded-md max-w-xs bg-neutral-100"
+            loading="lazy"
+          />
+        )}
+      </div>
+    </article>
   );
 };
