@@ -88,7 +88,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
             <button>{props.saving ? "Uploading..." : "Save"}</button>
           </div>
           <div class="grid gap-8 py-4">
-            <div class="max-w grid overflow-x-hidden font-serif text-xl font-title">
+            <div class="grid max-w-full overflow-x-hidden font-serif text-xl font-title">
               <div aria-hidden class="invisible whitespace-pre-wrap [grid-area:1/1]">
                 {/*
                   NOTE: This is not currently necessary since new lines are being restricted,
@@ -114,7 +114,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                 <img alt="" src={photoPreviewURL()} class="rounded-md" />
                 <button
                   type="button"
-                  class="ablute right-3 top-3 text-white"
+                  class="absolute right-3 top-3 text-white"
                   onclick={() => {
                     setPhoto(undefined);
                   }}
