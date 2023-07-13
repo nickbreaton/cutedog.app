@@ -39,8 +39,8 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
           disableBodyScroll(dialog()!);
         }}
         class="
-          fixed right-7 bottom-7 bg-blue-500 text-white w-14 aspect-square rounded-full
-          shadow-lg cursor-pointer outline-none text-3xl grid place-items-center
+          fixed bottom-7 right-7 grid aspect-square w-14 cursor-pointer place-items-center
+          rounded-full bg-blue-500 text-3xl text-white shadow-lg outline-none
         "
       >
         <HiSolidBars3CenterLeft />
@@ -48,8 +48,8 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
       <dialog
         ref={setDialog}
         class="
-          modal:w-full modal:max-w-full modal:h-full modal:max-h-full modal:m-auto modal:px-4
-          modal:sm:shadow-lg modal:sm:rounded-md modal:sm:max-w-xl modal:sm:w-full modal:sm:max-h-[theme(maxWidth.xl)] modal:sm:px-6
+          modal:m-auto modal:h-full modal:max-h-full modal:w-full modal:max-w-full modal:px-4
+          modal:sm:max-h-[theme(maxWidth.xl)] modal:sm:w-full modal:sm:max-w-xl modal:sm:rounded-md modal:sm:px-6 modal:sm:shadow-lg
         "
       >
         <form
@@ -74,7 +74,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
             window.scrollTo(0, 0);
           }}
         >
-          <div class="py-4 flex justify-between">
+          <div class="flex justify-between py-4">
             <button
               type="button"
               onclick={() => {
@@ -88,8 +88,8 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
             <button>{props.saving ? "Uploading..." : "Save"}</button>
           </div>
           <div class="grid gap-8 py-4">
-            <div class="font-serif font-title text-xl grid max-w overflow-x-hidden">
-              <div aria-hidden class="[grid-area:1/1] invisible whitespace-pre-wrap">
+            <div class="max-w grid overflow-x-hidden font-serif text-xl font-title">
+              <div aria-hidden class="invisible whitespace-pre-wrap [grid-area:1/1]">
                 {/*
                   NOTE: This is not currently necessary since new lines are being restricted,
                   but in the case that changes this hack is needed to keep this div mirroring the backing text area.
@@ -106,7 +106,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                   target.value = target.value.replaceAll("\n", "");
                   setQuote(target.value);
                 }}
-                class="resize-none outline-none [grid-area:1/1] h-full max-w-full break-words placeholder:text-neutral-400"
+                class="h-full max-w-full resize-none break-words outline-none [grid-area:1/1] placeholder:text-neutral-400"
               />
             </div>
             {photoPreviewURL() ? (
@@ -114,7 +114,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                 <img alt="" src={photoPreviewURL()} class="rounded-md" />
                 <button
                   type="button"
-                  class="ablute top-3 right-3 text-white"
+                  class="ablute right-3 top-3 text-white"
                   onclick={() => {
                     setPhoto(undefined);
                   }}
@@ -123,9 +123,9 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                 </button>
               </div>
             ) : (
-              <label class="w-48 aspect-square bg-neutral-100 border border-neutral-200 rounded-md relative z-0 cursor-pointer grid place-items-center placeholder:text-neutral-400">
-                <div class="grid justify-center font-title text-neutral-400 gap-1">
-                  <div class="text-2xl flex justify-center">
+              <label class="relative z-0 grid aspect-square w-48 cursor-pointer place-items-center rounded-md border border-neutral-200 bg-neutral-100 placeholder:text-neutral-400">
+                <div class="grid justify-center gap-1 font-title text-neutral-400">
+                  <div class="flex justify-center text-2xl">
                     <HiSolidCamera />
                   </div>
                   <div>
@@ -136,7 +136,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
                       oninput={(event) => {
                         setPhoto(() => event.target.files?.[0]);
                       }}
-                      class="opacity-0 appearance-none absolute inset-0 cursor-pointer"
+                      class="absolute inset-0 cursor-pointer appearance-none opacity-0"
                     />
                   </div>
                 </div>

@@ -21,5 +21,5 @@ export default createHandler(
       return forward(event);
     };
   },
-  renderAsync((event) => <StartServer event={event} />)
+  renderAsync((event) => <StartServer event={event} />),
 );

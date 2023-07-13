@@ -20,7 +20,7 @@ export async function POST(event: APIEvent) {
             expires: getDateOneYearFromNow(),
           }),
         },
-      }
+      },
     );
   }
 

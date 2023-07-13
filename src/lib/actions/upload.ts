@@ -23,7 +23,7 @@ export async function uploadAction(form: FormData) {
       (err, result) => {
         if (err) return rej(err);
         res(result!);
-      }
+      },
     );
 
     const readableStream = Readable.from(photo.stream());
@@ -32,6 +32,6 @@ export async function uploadAction(form: FormData) {
 
   await getConnection().execute(
     "insert into interactions (quotes, datetime, timezone, lat, lon, photoID) VALUES (?, ?, ?, ?, ?, ?)",
-    [JSON.stringify([quote]), datetime, timezone, lat, lon, result?.public_id]
+    [JSON.stringify([quote]), datetime, timezone, lat, lon, result?.public_id],
   );
 }

@@ -29,12 +29,12 @@ export function Header() {
   return (
     <header
       // TODO: make it so it doesn't transition until after the initial determination of if we are scrolled
-      class={`sticky top-0 py-3 px-4 bg-neutral-50 z-10 [transition:box-shadow_100ms] ${
+      class={`sticky top-0 z-10 bg-neutral-50 px-4 py-3 [transition:box-shadow_100ms] ${
         hasScrolled() ? "shadow-sm" : ""
       }`}
     >
       <Content>
-        <div class="flex justify-between font-serif font-title text-xl">
+        <div class="flex justify-between font-serif text-xl font-title">
           <h1>
             <A href="/">CuteDog.app {/* animate to “Cute Dog” on scroll*/}</A>
           </h1>

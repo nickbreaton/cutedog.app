@@ -21,7 +21,7 @@ export default function Root() {
           rel="stylesheet"
         />
       </Head>
-      <Body class="font-sans bg-neutral-50">
+      <Body class="bg-neutral-50 font-sans">
         <Suspense>
           <ErrorBoundary>
             <Header />

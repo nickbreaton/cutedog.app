@@ -39,8 +39,8 @@ export default async function (form: FormData) {
         const ext = res.headers.get("content-type")!.replace("image/", "");
 
         images.file(`${interactionResult.id}.${ext}`, await res.blob());
-      })
-    )
+      }),
+    ),
   );
 
   const blob = await zip.generateAsync({ type: "blob" });

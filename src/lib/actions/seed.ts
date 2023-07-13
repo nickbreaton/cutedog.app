@@ -123,7 +123,7 @@ export async function seedAction(form: FormData) {
       quotes: record.quote,
       description: record.description || undefined,
       photoID: record.photoId,
-    })
+    }),
   );
 
   for (const interaction of interactions) {
@@ -137,7 +137,7 @@ export async function seedAction(form: FormData) {
         interaction.lon,
         interaction.photoID,
         interaction.description,
-      ]
+      ],
     );
   }
 }

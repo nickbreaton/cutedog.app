@@ -31,7 +31,7 @@ export default function Admin() {
 
   return (
     <Content>
-      <div class="flex flex-col py-5 gap-10">
+      <div class="flex flex-col gap-10 py-5">
         {import.meta.env.PROD && (
           <h1 class="text-4xl font-title text-red-500">
             CAUTION:
