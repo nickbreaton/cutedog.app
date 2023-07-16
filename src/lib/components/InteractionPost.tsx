@@ -1,13 +1,17 @@
 import { InteractionResult } from "../types";
-import { For } from "solid-js";
-import { HiSolidEllipsisHorizontal } from "solid-icons/hi";
+import { For, createSignal, lazy } from "solid-js";
+import { HiSolidEllipsisHorizontal, HiSolidTrash, HiSolidPencilSquare } from "solid-icons/hi";
 import { getTimeZoneForIntl } from "../date";
 
 function balaneQuoteText(text: string) {
   return text.replaceAll("I ", "I\u00A0");
 }
 
+const PostMenu = lazy(() => import("./PostMenu"));
+
 export const InteractionPost = (props: { interaction: InteractionResult; onDelete: () => void }) => {
+  const [button, setButton] = createSignal<HTMLButtonElement>();
+
   return (
     <article class="-mx-4 cursor-default border-y border-neutral-200 bg-white p-4 sm:mx-0 sm:rounded-md sm:border-x">
       <div class="grid gap-2">
@@ -23,14 +27,44 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
           </div>
           <button
             class="grid aspect-square cursor-pointer place-items-center text-2xl text-neutral-500"
-            onclick={() => {
-              if (confirm("Delete?")) {
-                props.onDelete();
-              }
-            }}
+            ref={setButton}
           >
             <HiSolidEllipsisHorizontal />
           </button>
+          <PostMenu button={button()!}>
+            <div class="overflow-hidden rounded-md  border border-neutral-200 bg-white shadow-sm shadow-neutral-50 ">
+              <For
+                each={[
+                  {
+                    text: "Edit",
+                    icon: <HiSolidPencilSquare />,
+                    class: "",
+                    onClick: () => console.log("TODO: edit action"),
+                  },
+                  {
+                    text: "Delete",
+                    icon: <HiSolidTrash />,
+                    class: "text-red-500",
+                    onClick: () => {
+                      if (window.confirm("Delete?")) {
+                        props.onDelete();
+                      }
+                    },
+                  },
+                ]}
+              >
+                {(item) => (
+                  <button
+                    class={`flex min-w-full items-center gap-2 py-2 pl-4 pr-6 -outline-offset-1 hover:bg-neutral-50 ${item.class}`}
+                    onClick={item.onClick}
+                  >
+                    {item.icon}
+                    {item.text}
+                  </button>
+                )}
+              </For>
+            </div>
+          </PostMenu>
         </div>
         <div>
           {new Intl.DateTimeFormat("en-US", {
