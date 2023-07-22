@@ -37,12 +37,12 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
               <div class="overflow-hidden rounded-md border border-neutral-200 bg-white shadow-sm shadow-neutral-50">
                 <For
                   each={[
-                    {
-                      text: "Edit",
-                      icon: <HiSolidPencilSquare />,
-                      class: "",
-                      onClick: () => console.log("TODO: edit action"),
-                    },
+                    // {
+                    //   text: "Edit",
+                    //   icon: <HiSolidPencilSquare />,
+                    //   class: "",
+                    //   onClick: () => console.log("TODO: edit action"),
+                    // },
                     {
                       text: "Delete",
                       icon: <HiSolidTrash />,
