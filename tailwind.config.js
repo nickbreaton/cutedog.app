@@ -15,6 +15,19 @@ export default {
       colors: {
         text: "#222",
       },
+      animation: {
+        "grid-reveal": "grid-reveal 100ms ease-out, fade 50ms ease-out",
+      },
+      keyframes: {
+        "grid-reveal": {
+          "0%": { gridTemplateRows: "0fr" },
+          "100%": { gridTemplateRows: "1fr" },
+        },
+        fade: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
     },
   },
 

@@ -26,43 +26,46 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
             </For>
           </div>
           <button
-            class="grid aspect-square cursor-pointer place-items-center text-2xl text-neutral-500"
+            class="grid aspect-square cursor-default place-items-center rounded-full text-2xl text-neutral-500
+            aria-[expanded=false]:hover:cursor-pointer aria-[expanded=false]:hover:bg-neutral-50 aria-[expanded=false]:active:bg-neutral-100"
             ref={setButton}
           >
             <HiSolidEllipsisHorizontal />
           </button>
           <PostMenu button={button()!}>
-            <div class="overflow-hidden rounded-md  border border-neutral-200 bg-white shadow-sm shadow-neutral-50 ">
-              <For
-                each={[
-                  {
-                    text: "Edit",
-                    icon: <HiSolidPencilSquare />,
-                    class: "",
-                    onClick: () => console.log("TODO: edit action"),
-                  },
-                  {
-                    text: "Delete",
-                    icon: <HiSolidTrash />,
-                    class: "text-red-500",
-                    onClick: () => {
-                      if (window.confirm("Delete?")) {
-                        props.onDelete();
-                      }
+            <div class="grid animate-grid-reveal">
+              <div class="overflow-hidden rounded-md border border-neutral-200 bg-white shadow-sm shadow-neutral-50">
+                <For
+                  each={[
+                    {
+                      text: "Edit",
+                      icon: <HiSolidPencilSquare />,
+                      class: "",
+                      onClick: () => console.log("TODO: edit action"),
                     },
-                  },
-                ]}
-              >
-                {(item) => (
-                  <button
-                    class={`flex min-w-full items-center gap-2 py-2 pl-4 pr-6 -outline-offset-1 hover:bg-neutral-50 ${item.class}`}
-                    onClick={item.onClick}
-                  >
-                    {item.icon}
-                    {item.text}
-                  </button>
-                )}
-              </For>
+                    {
+                      text: "Delete",
+                      icon: <HiSolidTrash />,
+                      class: "text-red-500",
+                      onClick: () => {
+                        if (window.confirm("Delete?")) {
+                          props.onDelete();
+                        }
+                      },
+                    },
+                  ]}
+                >
+                  {(item) => (
+                    <button
+                      class={`flex min-w-full items-center gap-2 py-2 pl-4 pr-6 -outline-offset-1 hover:bg-neutral-50 active:bg-neutral-100  ${item.class}`}
+                      onClick={item.onClick}
+                    >
+                      {item.icon}
+                      {item.text}
+                    </button>
+                  )}
+                </For>
+              </div>
             </div>
           </PostMenu>
         </div>
