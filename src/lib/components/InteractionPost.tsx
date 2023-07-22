@@ -26,7 +26,7 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
             </For>
           </div>
           <button
-            class="grid aspect-square cursor-default place-items-center rounded-full text-2xl text-neutral-500
+            class="grid aspect-square cursor-default place-items-center content-center rounded-full text-2xl text-neutral-500
             aria-[expanded=false]:hover:cursor-pointer aria-[expanded=false]:hover:bg-neutral-50 aria-[expanded=false]:active:bg-neutral-100"
             ref={setButton}
           >
