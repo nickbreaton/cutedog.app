@@ -99,6 +99,11 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
               </div>
               <textarea
                 autofocus
+                onFocus={() => {
+                  // prevents iOS from jumping to focus the input
+                  dialog()!.hidden = true;
+                  setTimeout(() => (dialog()!.hidden = false));
+                }}
                 rows="1"
                 placeholder="Cute dog"
                 value={quote()}
