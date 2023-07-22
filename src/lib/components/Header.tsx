@@ -1,8 +1,9 @@
 import { Content } from "./Content";
 import { createEffect, createSignal, onCleanup } from "solid-js";
-import { A } from "solid-start";
+import { A, useLocation } from "solid-start";
 
 export function Header() {
+  const { pathname } = useLocation();
   const [hasScrolled, setScrolled] = createSignal(false);
 
   createEffect(() => {
@@ -36,7 +37,16 @@ export function Header() {
       <Content>
         <div class="flex justify-between font-serif text-xl font-title">
           <h1>
-            <A href="/">CuteDog.app {/* animate to “Cute Dog” on scroll*/}</A>
+            <A
+              href="/"
+              onClick={() => {
+                if (pathname === "/") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+            >
+              CuteDog.app {/* animate to “Cute Dog” on scroll*/}
+            </A>
           </h1>
         </div>
       </Content>
