@@ -70,7 +70,7 @@ export default function Home() {
   return (
     <Content>
       <InteractionEditor onSave={addInteraction} saving={adding.pending} />
-      <div class="grid gap-5">
+      <div class="grid gap-5 pb-6 pt-3">
         <For each={interactions()}>
           {(interaction) => (
             <InteractionPost interaction={interaction} onDelete={() => deleteInteraction(interaction.id)} />
