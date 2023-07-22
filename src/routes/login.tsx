@@ -1,4 +1,3 @@
-import { isDev } from "solid-js/web";
 import { createRouteAction, serializeCookie } from "solid-start";
 import { APIEvent } from "solid-start/api/types";
 import { json } from "solid-start/server";
@@ -14,9 +13,8 @@ export async function POST(event: APIEvent) {
       {
         headers: {
           "Set-Cookie": serializeCookie("password", password, {
-            httpOnly: !isDev,
-            secure: !isDev,
-            sameSite: !isDev,
+            httpOnly: import.meta.env.PROD,
+            secure: import.meta.env.PROD,
             expires: getDateOneYearFromNow(),
           }),
         },
