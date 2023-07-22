@@ -12,6 +12,10 @@ export async function uploadAction(form: FormData) {
   const lon = parseFloat(form.get("lon") as string);
   const photo = form.get("photo") as File;
 
+  if (!lat || !lon) {
+    throw new Error("Request did not contain location data" + JSON.stringify({ lat, lon }));
+  }
+
   const result = await new Promise<cloudinary.UploadApiResponse | null>(async (res, rej) => {
     if (!photo || photo.size === 0) {
       res(null);
