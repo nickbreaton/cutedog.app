@@ -1,12 +1,15 @@
 import { HiSolidCamera, HiSolidBars3CenterLeft, HiSolidXMark } from "solid-icons/hi";
-import { createComputed, createEffect, createSignal, onCleanup } from "solid-js";
+import { Show, createComputed, createEffect, createSignal, onCleanup } from "solid-js";
 import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
-import { Content } from "./Content";
 import { createCoordsStore } from "../signals/coords";
 import { getLocalOffset, getUTCDateTime } from "../date";
 
-export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<void>; saving: boolean }) => {
-  const [dialog, setDialog] = createSignal<HTMLDialogElement>();
+type Props = {
+  onSave: (data: FormData) => Promise<void>;
+  saving: boolean;
+};
+
+const DialogContent = (props: Props & { dialog?: HTMLDialogElement }) => {
   const [firstFocus, setFirstFocus] = createSignal(true);
 
   const [quote, setQuote] = createSignal("");
@@ -23,9 +26,117 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
       setPhotoPreviewURL("");
     }
   });
+  return (
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+
+        if (!quote() || props.saving) {
+          return;
+        }
+
+        const formData = new FormData();
+        formData.set("quote", quote());
+        formData.set("datetime", getUTCDateTime());
+        formData.set("timezone", getLocalOffset());
+        formData.set("lat", String(coords.lat));
+        formData.set("lon", String(coords.lon));
+        if (photo()) formData.set("photo", photo()!);
+        await props.onSave(formData);
+        setQuote("");
+        setPhoto(undefined);
+        props.dialog?.close();
+        window.scrollTo(0, 0);
+      }}
+    >
+      <div class="flex justify-between py-4">
+        <button
+          type="button"
+          onclick={() => {
+            if (!props.saving) {
+              props.dialog!.close();
+            }
+          }}
+        >
+          Close
+        </button>
+        <button>{props.saving ? "Uploading..." : "Save"}</button>
+      </div>
+      <div class="grid gap-8 py-4">
+        <div class="grid max-w-full overflow-x-hidden font-serif text-xl font-title">
+          <div aria-hidden class="invisible whitespace-pre-wrap [grid-area:1/1]">
+            {/*
+                  NOTE: This is not currently necessary since new lines are being restricted,
+                  but in the case that changes this hack is needed to keep this div mirroring the backing text area.
+                  This keeps up the illusion that the textarea is wrapping while actuall this div is.
+                */}
+            {quote().endsWith("\n") ? quote() + " " : quote()}
+          </div>
+          <textarea
+            autofocus
+            onFocus={() => {
+              if (firstFocus()) {
+                // prevents iOS from jumping to focus the input
+                props.dialog!.hidden = true;
+                setTimeout(() => (props.dialog!.hidden = false));
+                setFirstFocus(false);
+              }
+            }}
+            rows="1"
+            placeholder="Cute dog"
+            value={quote()}
+            oninput={({ target }) => {
+              target.value = target.value.replaceAll("\n", "");
+              setQuote(target.value);
+            }}
+            class="h-full max-w-full resize-none break-words outline-none [grid-area:1/1] placeholder:text-neutral-400"
+          />
+        </div>
+        {photoPreviewURL() ? (
+          <div class="relative w-full max-w-xs">
+            <img alt="" src={photoPreviewURL()} class="rounded-md" />
+            <button
+              type="button"
+              class="absolute right-3 top-3 text-white"
+              onclick={() => {
+                setPhoto(undefined);
+              }}
+            >
+              <HiSolidXMark />
+            </button>
+          </div>
+        ) : (
+          <label class="relative z-0 grid aspect-square w-48 cursor-pointer place-items-center rounded-md border border-neutral-200 bg-neutral-100 placeholder:text-neutral-400">
+            <div class="grid justify-center gap-1 font-title text-neutral-400">
+              <div class="flex justify-center text-2xl">
+                <HiSolidCamera />
+              </div>
+              <div>
+                Upload a Photo
+                <input
+                  type="file"
+                  name="photo"
+                  oninput={(event) => {
+                    setPhoto(() => event.target.files?.[0]);
+                  }}
+                  class="absolute inset-0 cursor-pointer appearance-none opacity-0"
+                />
+              </div>
+            </div>
+          </label>
+        )}
+      </div>
+    </form>
+  );
+};
+
+export const InteractionEditor = (props: Props) => {
+  const [dialog, setDialog] = createSignal<HTMLDialogElement>();
+  const [isContentVisible, setContentVisible] = createSignal(false);
 
   createEffect(() => {
     const listener = () => {
+      setContentVisible(false);
       enableBodyScroll(dialog()!);
     };
     dialog()?.addEventListener("close", listener);
@@ -36,6 +147,7 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
     <>
       <button
         onclick={() => {
+          setContentVisible(true);
           dialog()!.showModal();
           disableBodyScroll(dialog()!);
         }}
@@ -53,106 +165,9 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
           modal:sm:max-h-[theme(maxWidth.xl)] modal:sm:w-full modal:sm:max-w-xl modal:sm:rounded-md modal:sm:px-6 modal:sm:shadow-lg
         "
       >
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-
-            if (!quote() || props.saving) {
-              return;
-            }
-
-            const formData = new FormData();
-            formData.set("quote", quote());
-            formData.set("datetime", getUTCDateTime());
-            formData.set("timezone", getLocalOffset());
-            formData.set("lat", String(coords.lat));
-            formData.set("lon", String(coords.lon));
-            if (photo()) formData.set("photo", photo()!);
-            await props.onSave(formData);
-            setQuote("");
-            setPhoto(undefined);
-            dialog()?.close();
-            window.scrollTo(0, 0);
-          }}
-        >
-          <div class="flex justify-between py-4">
-            <button
-              type="button"
-              onclick={() => {
-                if (!props.saving) {
-                  dialog()!.close();
-                }
-              }}
-            >
-              Close
-            </button>
-            <button>{props.saving ? "Uploading..." : "Save"}</button>
-          </div>
-          <div class="grid gap-8 py-4">
-            <div class="grid max-w-full overflow-x-hidden font-serif text-xl font-title">
-              <div aria-hidden class="invisible whitespace-pre-wrap [grid-area:1/1]">
-                {/*
-                  NOTE: This is not currently necessary since new lines are being restricted,
-                  but in the case that changes this hack is needed to keep this div mirroring the backing text area.
-                  This keeps up the illusion that the textarea is wrapping while actuall this div is.
-                */}
-                {quote().endsWith("\n") ? quote() + " " : quote()}
-              </div>
-              <textarea
-                autofocus
-                onFocus={() => {
-                  if (firstFocus()) {
-                    // prevents iOS from jumping to focus the input
-                    dialog()!.hidden = true;
-                    setTimeout(() => (dialog()!.hidden = false));
-                    setFirstFocus(false);
-                  }
-                }}
-                rows="1"
-                placeholder="Cute dog"
-                value={quote()}
-                oninput={({ target }) => {
-                  target.value = target.value.replaceAll("\n", "");
-                  setQuote(target.value);
-                }}
-                class="h-full max-w-full resize-none break-words outline-none [grid-area:1/1] placeholder:text-neutral-400"
-              />
-            </div>
-            {photoPreviewURL() ? (
-              <div class="relative w-full max-w-xs">
-                <img alt="" src={photoPreviewURL()} class="rounded-md" />
-                <button
-                  type="button"
-                  class="absolute right-3 top-3 text-white"
-                  onclick={() => {
-                    setPhoto(undefined);
-                  }}
-                >
-                  <HiSolidXMark />
-                </button>
-              </div>
-            ) : (
-              <label class="relative z-0 grid aspect-square w-48 cursor-pointer place-items-center rounded-md border border-neutral-200 bg-neutral-100 placeholder:text-neutral-400">
-                <div class="grid justify-center gap-1 font-title text-neutral-400">
-                  <div class="flex justify-center text-2xl">
-                    <HiSolidCamera />
-                  </div>
-                  <div>
-                    Upload a Photo
-                    <input
-                      type="file"
-                      name="photo"
-                      oninput={(event) => {
-                        setPhoto(() => event.target.files?.[0]);
-                      }}
-                      class="absolute inset-0 cursor-pointer appearance-none opacity-0"
-                    />
-                  </div>
-                </div>
-              </label>
-            )}
-          </div>
-        </form>
+        <Show when={isContentVisible()}>
+          <DialogContent dialog={dialog()} {...props} />
+        </Show>
       </dialog>
     </>
   );
