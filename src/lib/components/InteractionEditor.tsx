@@ -7,6 +7,7 @@ import { getLocalOffset, getUTCDateTime } from "../date";
 
 export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<void>; saving: boolean }) => {
   const [dialog, setDialog] = createSignal<HTMLDialogElement>();
+  const [firstFocus, setFirstFocus] = createSignal(true);
 
   const [quote, setQuote] = createSignal("");
   const [photo, setPhoto] = createSignal<File>();
@@ -100,9 +101,12 @@ export const InteractionEditor = (props: { onSave: (data: FormData) => Promise<v
               <textarea
                 autofocus
                 onFocus={() => {
-                  // prevents iOS from jumping to focus the input
-                  dialog()!.hidden = true;
-                  setTimeout(() => (dialog()!.hidden = false));
+                  if (firstFocus()) {
+                    // prevents iOS from jumping to focus the input
+                    dialog()!.hidden = true;
+                    setTimeout(() => (dialog()!.hidden = false));
+                    setFirstFocus(false);
+                  }
                 }}
                 rows="1"
                 placeholder="Cute dog"
