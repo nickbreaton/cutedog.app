@@ -24,8 +24,8 @@ dependencies:
     specifier: ^3.1.0
     version: 3.1.0
   body-scroll-lock:
-    specifier: 4.0.0-beta.0
-    version: 4.0.0-beta.0
+    specifier: 3.1.5
+    version: 3.1.5
   cloudinary:
     specifier: ^1.37.3
     version: 1.37.3
@@ -2254,8 +2254,8 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /body-scroll-lock@4.0.0-beta.0:
-    resolution: {integrity: sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==}
+  /body-scroll-lock@3.1.5:
+    resolution: {integrity: sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==}
     dev: false
 
   /bplist-parser@0.2.0:
