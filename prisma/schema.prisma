@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Interaction {
+  id Int @id @default(autoincrement())
+  quote String
+  lat Decimal
+  lng Decimal
+  description String?
+  photoID String?
+  datetime DateTime
+  timezone String
+  cachedState String?
+  cachedCity String?
+  cachedPhotoAspectRatio Decimal?
+}

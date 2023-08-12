@@ -14,6 +14,9 @@ dependencies:
   '@popperjs/core':
     specifier: ^2.11.8
     version: 2.11.8
+  '@prisma/client':
+    specifier: 5.1.1
+    version: 5.1.1(prisma@5.1.1)
   '@solidjs/meta':
     specifier: ^0.28.6
     version: 0.28.6(solid-js@1.7.11)
@@ -24,8 +27,8 @@ dependencies:
     specifier: ^3.1.0
     version: 3.1.0
   body-scroll-lock:
-    specifier: 4.0.0-beta.0
-    version: 4.0.0-beta.0
+    specifier: 3.1.5
+    version: 3.1.5
   cloudinary:
     specifier: ^1.40.0
     version: 1.40.0
@@ -91,6 +94,9 @@ devDependencies:
   prettier-plugin-tailwindcss:
     specifier: ^0.5.2
     version: 0.5.2(prettier@3.0.1)
+  prisma:
+    specifier: ^5.1.1
+    version: 5.1.1
   solid-start-node:
     specifier: ^0.3.2
     version: 0.3.2(solid-start@0.3.2)(vite@4.4.9)
@@ -1940,6 +1946,28 @@ packages:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
+  /@prisma/client@5.1.1(prisma@5.1.1):
+    resolution: {integrity: sha512-fxcCeK5pMQGcgCqCrWsi+I2rpIbk0rAhdrN+ke7f34tIrgPwA68ensrpin+9+fZvuV2OtzHmuipwduSY6HswdA==}
+    engines: {node: '>=16.13'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 5.1.1-1.6a3747c37ff169c90047725a05a6ef02e32ac97e
+      prisma: 5.1.1
+    dev: false
+
+  /@prisma/engines-version@5.1.1-1.6a3747c37ff169c90047725a05a6ef02e32ac97e:
+    resolution: {integrity: sha512-owZqbY/wucbr65bXJ/ljrHPgQU5xXTSkmcE/JcbqE1kusuAXV/TLN3/exmz21SZ5rJ7WDkyk70J2G/n68iogbQ==}
+    dev: false
+
+  /@prisma/engines@5.1.1:
+    resolution: {integrity: sha512-NV/4nVNWFZSJCCIA3HIFJbbDKO/NARc9ej0tX5S9k2EVbkrFJC4Xt9b0u4rNZWL4V+F5LAjvta8vzEUw0rw+HA==}
+    requiresBuild: true
+
   /@rollup/plugin-commonjs@24.1.0(rollup@3.28.0):
     resolution: {integrity: sha512-eSL45hjhCWI0jCCXcNtLVqM5N1JlBGvlFfY0m6oOYnLCJ6N0qEXoZql4sY2MOUArzhH4SA/qBpTxvvZp2Sc+DQ==}
     engines: {node: '>=14.0.0'}
@@ -2375,8 +2403,8 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /body-scroll-lock@4.0.0-beta.0:
-    resolution: {integrity: sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==}
+  /body-scroll-lock@3.1.5:
+    resolution: {integrity: sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==}
     dev: false
 
   /bplist-parser@0.2.0:
@@ -3999,6 +4027,14 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
     dev: true
+
+  /prisma@5.1.1:
+    resolution: {integrity: sha512-WJFG/U7sMmcc6TjJTTifTfpI6Wjoh55xl4AzopVwAdyK68L9/ogNo8QQ2cxuUjJf/Wa82z/uhyh3wMzvRIBphg==}
+    engines: {node: '>=16.13'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 5.1.1
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
