@@ -1,17 +1,17 @@
 import server$ from "solid-start/server";
-import { getConnection } from "../database";
 import { InteractionResult } from "../types";
 import cloudinary from "cloudinary";
 import JSZip from "jszip";
 import pLimit from "p-limit";
+import { prisma } from "../database";
 
 const exportRecords = server$(async () => {
-  const { rows, fields } = await getConnection().execute("select * from interactions");
-  const rowsWithURL: InteractionResult[] = (rows as any[]).map((interaction: InteractionResult) => ({
+  const rows = await prisma.interaction.findMany()
+  const rowsWithURL = rows.map((interaction) => ({
     ...interaction,
     photoURL: interaction.photoID ? cloudinary.v2.url(interaction.photoID, { secure: true }) : undefined,
   }));
-  return { rows: rowsWithURL, fields };
+  return { rows: rowsWithURL };
 });
 
 export default async function (form: FormData) {

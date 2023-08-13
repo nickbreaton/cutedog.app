@@ -6,6 +6,8 @@ export default function Tooltip(props: { children: JSXElement; button: HTMLButto
   const [popper, setPopper] = createSignal<HTMLDivElement>();
 
   createEffect(() => {
+    console.log(props.button);
+
     const instance = tippy(props.button, {
       trigger: "click",
       interactive: true,

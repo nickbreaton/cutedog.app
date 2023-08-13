@@ -5,7 +5,7 @@ import {
   type ReverseGeocodeResponseData,
 } from "@googlemaps/google-maps-services-js";
 
-export async function getCityState(lat: number, lng: number) {
+export async function getCityState(lat: string, lng: string) {
   const url = new URL("https://maps.googleapis.com/maps/api/geocode/json");
   url.searchParams.set("latlng", [lat, lng].join(","));
   url.searchParams.set("key", process.env.GOOGLE_MAPS_API_KEY!);

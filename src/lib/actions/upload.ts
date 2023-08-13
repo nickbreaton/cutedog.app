@@ -1,8 +1,8 @@
-import { createServerAction$ } from "solid-start/server";
 import cloudinary from "cloudinary";
 import { assertEnv } from "../env";
 import { Readable } from "streamx";
-import { getConnection } from "../database";
+import { Prisma } from '@prisma/client'
+import { prisma } from "../database";
 
 export async function uploadAction(form: FormData) {
   const quote = form.get("quote");
@@ -34,8 +34,14 @@ export async function uploadAction(form: FormData) {
     readableStream.pipe(uploadStream);
   });
 
-  await getConnection().execute(
-    "insert into interactions (quotes, datetime, timezone, lat, lon, photoID) VALUES (?, ?, ?, ?, ?, ?)",
-    [JSON.stringify([quote]), datetime, timezone, lat, lon, result?.public_id],
-  );
+  await prisma.interaction.create({
+    data: {
+      quote: quote as string,
+      datetime: datetime as string,
+      timezone: timezone as string,
+      lat: new Prisma.Decimal(lat),
+      lng: new Prisma.Decimal(lon),
+      photoID: result?.public_id
+    }
+  })
 }

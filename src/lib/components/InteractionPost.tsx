@@ -1,4 +1,4 @@
-import { InteractionResult } from "../types";
+import { InteractionResult, Timezone } from "../types";
 import { For, createSignal, lazy } from "solid-js";
 import { HiSolidEllipsisHorizontal, HiSolidTrash, HiSolidPencilSquare } from "solid-icons/hi";
 import { getTimeZoneForIntl } from "../date";
@@ -17,13 +17,9 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
       <div class="grid gap-2">
         <div class="grid grid-cols-[auto,theme(spacing.8)]">
           <div class="grid gap-3 font-serif text-xl font-title">
-            <For each={props.interaction.quotes}>
-              {(quote) => (
-                <p class="pl-[var(--indent)] indent-[calc(var(--indent)*-1)] leading-snug [--indent:0.6ch]">
-                  “{balaneQuoteText(quote)}”
-                </p>
-              )}
-            </For>
+            <p class="pl-[var(--indent)] indent-[calc(var(--indent)*-1)] leading-snug [--indent:0.6ch]">
+              “{balaneQuoteText(props.interaction.quote)}”
+            </p>
           </div>
           <button
             class="grid aspect-square cursor-default place-items-center content-center rounded-full text-2xl text-neutral-500
@@ -73,8 +69,8 @@ export const InteractionPost = (props: { interaction: InteractionResult; onDelet
           {new Intl.DateTimeFormat("en-US", {
             dateStyle: "medium",
             timeStyle: "short",
-            timeZone: getTimeZoneForIntl(props.interaction.timezone),
-          }).format(new Date(`${props.interaction.datetime}+0000`))}
+            timeZone: getTimeZoneForIntl(props.interaction.timezone as Timezone),
+          }).format(new Date(props.interaction.datetime))}
         </div>
         <div>
           {props.interaction.cachedCity}, {props.interaction.cachedState}

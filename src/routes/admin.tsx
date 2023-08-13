@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import { For } from "solid-js";
 import { isDev } from "solid-js/web";
 import { A, createRouteAction, useRouteData } from "solid-start";
@@ -5,12 +6,11 @@ import server$, { createServerAction$, createServerData$ } from "solid-start/ser
 import exportAction from "~/lib/actions/export";
 import { seedAction } from "~/lib/actions/seed";
 import { Content } from "~/lib/components/Content";
-import { getConnection } from "~/lib/database";
+import { prisma } from "~/lib/database";
 
 export function routeData() {
   return createServerData$(async () => {
-    const results = await getConnection().execute("select datetime, quotes from interactions ORDER BY datetime DESC");
-    return results.rows as Array<{ quotes: string[] }>;
+    return await prisma.interaction.findMany({ select: { quote: true }, orderBy: { datetime: "desc" } })
   });
 }
 
@@ -21,7 +21,7 @@ export default function Admin() {
   const [, { Form: SeedForm }] = createServerAction$(seedAction);
   const [, { Form: DeleteForm }] = createRouteAction(async (form: FormData) => {
     const exec = server$(async () => {
-      await getConnection().execute("delete from interactions");
+      return await prisma.interaction.deleteMany()
     });
 
     if (confirm("Are you sure")) {
@@ -55,7 +55,7 @@ export default function Admin() {
         <div>
           <strong>Interactions</strong>
           <ul>
-            <For each={interactions()}>{(interaction) => <li>{interaction.quotes[0]}</li>}</For>
+            <For each={interactions()}>{(interaction) => <li>{interaction.quote}</li>}</For>
           </ul>
         </div>
       </div>

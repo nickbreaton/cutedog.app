@@ -37,7 +37,7 @@ const DialogContent = (props: Props & { dialog?: HTMLDialogElement }) => {
 
         const formData = new FormData();
         formData.set("quote", quote());
-        formData.set("datetime", getUTCDateTime());
+        formData.set("datetime", new Date().toISOString());
         formData.set("timezone", getLocalOffset());
         formData.set("lat", String(coords.lat));
         formData.set("lon", String(coords.lon));

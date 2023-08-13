@@ -21,9 +21,6 @@ export function getTimeZoneForIntl(offset: Timezone) {
   return `Etc/GMT${sign === "-" ? "+" : "-"}${parseInt(h + hh)}`;
 }
 
-export function getUTCDateTime(date = new Date()) {
-  return date.toISOString().slice(0, 19).replace("T", " ");
-}
 
 export function getDateOneYearFromNow() {
   const currentDate = new Date();

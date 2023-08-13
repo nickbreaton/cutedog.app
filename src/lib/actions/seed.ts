@@ -1,15 +1,4 @@
-// id: number;
-// datetime: string;
-// timezone: Timezone;
-// quotes: string[];
-// lat: number;
-// lon: number;
-// photoID?: string;
-// description?: string;
-
-import { getConnection } from "../database";
-import { getLocalOffset, getUTCDateTime } from "../date";
-import { Interaction } from "../types";
+import { prisma } from "../database";
 
 // 2023-07-03 2:00 pm
 
@@ -19,12 +8,6 @@ import { Interaction } from "../types";
  */
 export async function seedAction(form: FormData) {
   const source = [
-    // {
-    //   quote: [''],
-    //   date: new Date(''),
-    //   description: '',
-    //   coords: [],
-    // },
     {
       quote: ["Cute dog"],
       date: new Date("2023-07-01 3:38 pm EDT"),
@@ -114,30 +97,17 @@ export async function seedAction(form: FormData) {
     },
   ];
 
-  const interactions = source.map(
-    (record): Omit<Interaction, "id"> => ({
-      datetime: getUTCDateTime(record.date),
-      timezone: "-0400",
-      lat: record.coords[0],
-      lon: record.coords[1],
-      quotes: record.quote,
-      description: record.description || undefined,
-      photoID: record.photoId,
-    }),
-  );
-
-  for (const interaction of interactions) {
-    await getConnection().execute(
-      "insert into interactions (quotes, datetime, timezone, lat, lon, photoID, description) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [
-        JSON.stringify(interaction.quotes),
-        interaction.datetime,
-        interaction.timezone,
-        interaction.lat,
-        interaction.lon,
-        interaction.photoID,
-        interaction.description,
-      ],
-    );
-  }
+  await prisma.$transaction(source.map(record => {
+    return prisma.interaction.create({
+      data: {
+        datetime: record.date.toISOString(),
+        timezone: '-0400',
+        lat: record.coords[0],
+        lng: record.coords[1],
+        quote: record.quote[0],
+        description: record.description,
+        photoID: record.photoId
+      }
+    })
+  }))
 }
