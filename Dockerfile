@@ -13,10 +13,6 @@ RUN npm install -g pnpm@$PNPM_VERSION
 
 FROM base as build
 
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3 openssl zlib1g
-
-
 # Install dependencies
 COPY --link .npmrc package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod=false
