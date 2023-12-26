@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { data } = $props();
+	let { data: pet } = $props();
 </script>
 
-<h1>{data.pet}</h1>
+<h1>{pet.name}</h1>
