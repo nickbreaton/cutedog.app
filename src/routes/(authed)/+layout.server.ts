@@ -1,4 +1,4 @@
-import { isAuthed } from '$lib/auth';
+import { isAuthed } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { withParams } from '$lib/params';
