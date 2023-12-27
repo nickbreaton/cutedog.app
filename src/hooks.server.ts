@@ -12,7 +12,8 @@ const rewriteProductionHostname: Handle = ({ event, resolve }) => {
 };
 
 const guardAdminRoutes: Handle = ({ event, resolve }) => {
-	const isAdminAllowed = import.meta.env.DEV;
+	// Leave unprotected for time being
+	const isAdminAllowed = true;
 
 	if (!isAdminAllowed && event.url.pathname.startsWith('/admin')) {
 		return error(404);
