@@ -1,2 +1,0 @@
-- install ESLint
-- install eslint-plugin-tailwindcss, turn on "no-custom-classname"

@@ -1,9 +1,0 @@
-@layer reset, base, tokens, recipes, utilities;
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {
-  -webkit-tap-highlight-color: transparent;
-}
