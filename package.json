@@ -18,9 +18,10 @@
 		"test:unit": "vitest"
 	},
 	"dependencies": {
+		"better-sqlite3": "^9.2.2",
+		"compressing": "^1.10.0",
 		"drizzle-kit": "^0.20.8",
-		"drizzle-orm": "^0.29.2",
-		"better-sqlite3": "^9.2.2"
+		"drizzle-orm": "^0.29.2"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",

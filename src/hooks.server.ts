@@ -1,6 +1,7 @@
-import { type Handle, redirect } from '@sveltejs/kit';
+import { type Handle, redirect, error } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 
-export const handle: Handle = ({ event, resolve }) => {
+const rewriteProductionHostname: Handle = ({ event, resolve }) => {
 	if (event.url.origin.includes('fly.dev')) {
 		const location = new URL(event.url);
 		location.hostname = 'beta.cutedog.app';
@@ -9,3 +10,15 @@ export const handle: Handle = ({ event, resolve }) => {
 
 	return resolve(event);
 };
+
+const guardAdminRoutes: Handle = ({ event, resolve }) => {
+	const isAdminAllowed = import.meta.env.DEV;
+
+	if (!isAdminAllowed && event.url.pathname.startsWith('/admin')) {
+		return error(404);
+	}
+
+	return resolve(event);
+};
+
+export const handle = sequence(rewriteProductionHostname, guardAdminRoutes);
