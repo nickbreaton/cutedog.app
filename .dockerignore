@@ -1,7 +1,4 @@
 /node_modules
 /data
-/.svelte-kit
 .env
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
 fly.toml
