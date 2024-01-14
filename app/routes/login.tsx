@@ -1,4 +1,4 @@
-import { getUser, redirectFromLogin, getLoginCookie } from '~/lib/auth.server';
+import { redirectFromLogin, getLoginCookie, getOptionalUser } from '~/lib/auth.server';
 import { type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
 import { zfd } from 'zod-form-data';
@@ -8,7 +8,7 @@ const LoginForm = zfd.formData({
 });
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const user = await getUser(request);
+	const user = await getOptionalUser(request);
 
 	if (user) {
 		throw redirectFromLogin(request);

@@ -30,7 +30,7 @@ export async function getLoginCookie(password: string): Promise<string | null> {
 	return null;
 }
 
-export async function getUser(request: Request): Promise<User> {
+export async function getOptionalUser(request: Request): Promise<User | null> {
 	const password = await PasswordCookie.parse(request.headers.get('Cookie'));
 
 	if (isValidPassword(password)) {
@@ -38,6 +38,16 @@ export async function getUser(request: Request): Promise<User> {
 			id: '1',
 			username: 'nick'
 		};
+	}
+
+	return null;
+}
+
+export async function getUser(request: Request): Promise<User> {
+	const user = await getOptionalUser(request);
+
+	if (user) {
+		return user;
 	}
 
 	throw redirectToLogin(request);

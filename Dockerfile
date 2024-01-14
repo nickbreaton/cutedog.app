@@ -14,7 +14,7 @@ RUN npm install -g pnpm@$PNPM_VERSION
 FROM base as build
 
 # Install dependencies
-COPY --link .npmrc package.json pnpm-lock.yaml ./
+COPY --link package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod=false
 
 # Copy application code
