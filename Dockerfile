@@ -9,6 +9,7 @@ LABEL fly_launch_runtime="Node.js"
 
 WORKDIR /app
 
+RUN apt-get update -y && apt-get install -y openssl
 RUN npm install -g pnpm@$PNPM_VERSION
 
 FROM base as build
