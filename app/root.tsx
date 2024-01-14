@@ -1,5 +1,5 @@
 import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 
 export const links: LinksFunction = () => [
@@ -9,6 +9,21 @@ export const links: LinksFunction = () => [
 export const meta: MetaFunction = () => {
 	return [{ title: 'CuteDog.app' }];
 };
+
+export function loader({ request }: LoaderFunctionArgs) {
+	const url = new URL(request.url);
+
+	if (url.origin.includes('fly.dev')) {
+		const location = new URL(url);
+		location.hostname = 'beta.cutedog.app';
+		throw new Response(null, {
+			status: 307,
+			headers: { location: location.toString() }
+		});
+	}
+
+	return null;
+}
 
 export default function App() {
 	return (
