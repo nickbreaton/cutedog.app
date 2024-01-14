@@ -7,7 +7,7 @@ datasource db {
   url      = "file:../data/database.sqlite"
 }
 
-model pets {
+model Pet {
   id       Int    @id @unique() @default(autoincrement())
   username String @unique()
   name     String

@@ -8,7 +8,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	// TODO: eventually use user, but for now guard route
 	await getUser(request);
 
-	const pet = await prisma.pets.findFirst({ where: { username: params.pet! } });
+	const pet = await prisma.pet.findFirst({ where: { username: params.pet! } });
 
 	if (!pet) {
 		throw new Response(null, { status: 404 });
