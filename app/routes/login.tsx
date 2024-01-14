@@ -1,4 +1,4 @@
-import { getUser, redirectFromLogin, getLoginCookie } from '~/lib/auth';
+import { getUser, redirectFromLogin, getLoginCookie } from '~/lib/auth.server';
 import { type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
 import { zfd } from 'zod-form-data';

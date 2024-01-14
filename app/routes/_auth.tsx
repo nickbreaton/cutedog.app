@@ -1,13 +1,9 @@
-import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
-import { Form, Outlet } from '@remix-run/react';
-import { getUser, redirectToLogin } from '~/lib/auth';
+import { type LoaderFunctionArgs } from '@remix-run/node';
+import { getUser } from '~/lib/auth.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const user = await getUser(request);
+	// default protect layout
+	await getUser(request);
 
-	if (!user) {
-		throw redirectToLogin(request);
-	}
-
-	return user;
+	return null;
 }

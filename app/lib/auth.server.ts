@@ -1,4 +1,4 @@
-import { Cookie, createCookie } from '@remix-run/node';
+import { createCookie } from '@remix-run/node';
 
 const PasswordCookie = createCookie('password', {
 	httpOnly: true
@@ -30,7 +30,7 @@ export async function getLoginCookie(password: string): Promise<string | null> {
 	return null;
 }
 
-export async function getUser(request: Request): Promise<User | null> {
+export async function getUser(request: Request): Promise<User> {
 	const password = await PasswordCookie.parse(request.headers.get('Cookie'));
 
 	if (isValidPassword(password)) {
@@ -40,7 +40,7 @@ export async function getUser(request: Request): Promise<User | null> {
 		};
 	}
 
-	return null;
+	throw redirectToLogin(request);
 }
 
 export function redirectToLogin(request?: Request) {
