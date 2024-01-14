@@ -7,19 +7,20 @@
 		"build": "remix build",
 		"dev": "remix dev --manual",
 		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+		"prestart": "prisma migrate dev",
 		"start": "remix-serve ./build/index.js",
 		"typecheck": "tsc",
-		"migrate": "drizzle-kit push:sqlite && drizzle-kit up:sqlite"
+		"migrate": "prisma migrate dev"
 	},
 	"dependencies": {
+		"@prisma/client": "5.8.0",
 		"@remix-run/css-bundle": "^2.5.0",
 		"@remix-run/node": "^2.5.0",
 		"@remix-run/react": "^2.5.0",
 		"@remix-run/serve": "^2.5.0",
 		"better-sqlite3": "^9.2.2",
-		"drizzle-kit": "^0.20.12",
-		"drizzle-orm": "^0.29.3",
 		"isbot": "^4.1.0",
+		"prisma": "^5.8.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"zod": "^3.22.4",

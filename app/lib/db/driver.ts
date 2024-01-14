@@ -1,5 +1,3 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
+import { PrismaClient } from '@prisma/client';
 
-const sqlite = new Database('./data/database.sqlite');
-export const db = drizzle(sqlite);
+export const prisma = new PrismaClient();
