@@ -1,16 +1,13 @@
 import { createCookie } from '@remix-run/node';
 import { redirect } from './response';
+import { prisma } from './db/driver';
+import { User } from '@prisma/client';
 
 const PasswordCookie = createCookie('password', {
 	httpOnly: true
 });
 
 const REDIRECT_PARAM = 'redirect';
-
-export interface User {
-	id: string;
-	username: string;
-}
 
 /**
  * Intent to deprecate once actual users are created.
@@ -35,10 +32,15 @@ export async function getOptionalUser(request: Request): Promise<User | null> {
 	const password = await PasswordCookie.parse(request.headers.get('Cookie'));
 
 	if (isValidPassword(password)) {
-		return {
-			id: '1',
-			username: 'nick'
-		};
+		return await prisma.$transaction(async (tx) => {
+			const user = await tx.user.findFirst();
+
+			if (!user) {
+				return await tx.user.create({ data: { email: 'nick@nickbreaton.com' } });
+			}
+
+			return user;
+		});
 	}
 
 	return null;

@@ -11,4 +11,11 @@ model Pet {
   id       Int    @id @unique() @default(autoincrement())
   username String @unique()
   name     String
+  owners   User[]
+}
+
+model User {
+  id       Int    @id @unique() @default(autoincrement())
+  email    String @unique()
+  pets     Pet[]
 }
