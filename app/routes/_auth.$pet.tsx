@@ -2,8 +2,8 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { eq } from 'drizzle-orm';
 import { getUser } from '~/lib/auth.server';
-import { db } from '~/lib/db.server';
-import { pets } from '~/lib/tables.server';
+import { db } from '~/lib/db/driver';
+import { pets } from '~/lib/db/schema';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	// TODO: eventually use user, but for now guard route
