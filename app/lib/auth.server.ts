@@ -1,4 +1,5 @@
 import { createCookie } from '@remix-run/node';
+import { redirect } from './response';
 
 const PasswordCookie = createCookie('password', {
 	httpOnly: true
@@ -65,10 +66,7 @@ export function redirectToLogin(request?: Request) {
 		location += '?' + params.toString();
 	}
 
-	return new Response(null, {
-		status: 303,
-		headers: { location }
-	});
+	return redirect(location);
 }
 
 export function redirectFromLogin(request: Request, headers: [string, string][] = []) {

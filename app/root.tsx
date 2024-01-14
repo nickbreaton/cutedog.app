@@ -1,6 +1,7 @@
 import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { redirect } from './lib/response';
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
@@ -16,10 +17,7 @@ export function loader({ request }: LoaderFunctionArgs) {
 	if (url.origin.includes('fly.dev')) {
 		const location = new URL(url);
 		location.hostname = 'beta.cutedog.app';
-		throw new Response(null, {
-			status: 307,
-			headers: { location: location.toString() }
-		});
+		throw redirect(location, { status: 307 });
 	}
 
 	return null;
