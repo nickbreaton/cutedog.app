@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-// import { eq } from 'drizzle-orm';
 import { getUser } from '~/lib/auth.server';
 import { prisma } from '~/lib/db/driver';
 // import { pets } from '~/lib/db/schema';
