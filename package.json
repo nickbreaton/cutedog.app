@@ -12,6 +12,7 @@
 		"migrate": "prisma migrate dev"
 	},
 	"dependencies": {
+		"@planetscale/database": "^1.14.0",
 		"@prisma/client": "5.8.0",
 		"@remix-run/node": "^2.5.1",
 		"@remix-run/react": "^2.5.1",
