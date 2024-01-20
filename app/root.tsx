@@ -17,7 +17,7 @@ export function loader({ request }: LoaderFunctionArgs) {
 	if (url.origin.includes('fly.dev')) {
 		const location = new URL(url);
 		location.hostname = 'beta.cutedog.app';
-		throw redirect(location, { status: 307 });
+		throw redirect(location, { status: 301 });
 	}
 
 	return null;
