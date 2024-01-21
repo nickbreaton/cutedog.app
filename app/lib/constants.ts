@@ -1,7 +1,8 @@
 // prettier-ignore
 export const SITE_ROUTE_REDIRECTS = [
   'login',
-  'register'
+  'register',
+  'new'
 ];
 
 // prettier-ignore

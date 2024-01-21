@@ -1,9 +1,8 @@
-import { ActionFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { zfd } from 'zod-form-data';
-import { getUser } from '~/lib/auth.server';
+import { getUser } from '~/lib/auth';
 import { prisma } from '~/lib/db/driver';
-import { redirect } from '~/lib/response';
 
 const actionSchema = zfd.formData({
 	name: zfd.text().refine((name) => name.match(/^[a-zA-Z0-9]+$/)),

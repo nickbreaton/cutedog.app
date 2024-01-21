@@ -1,6 +1,13 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import { redirect } from './lib/response';
+import {
+	Links,
+	LiveReload,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	redirect
+} from '@remix-run/react';
 import './root.css';
 
 export const meta: MetaFunction = () => {
@@ -13,7 +20,7 @@ export function loader({ request }: LoaderFunctionArgs) {
 	if (url.origin.includes('fly.dev')) {
 		const location = new URL(url);
 		location.hostname = 'beta.cutedog.app';
-		throw redirect(location, { status: 301 });
+		throw redirect(location.href, { status: 301 });
 	}
 
 	return null;

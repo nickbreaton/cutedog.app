@@ -1,5 +1,4 @@
 import { createCookie } from '@remix-run/node';
-import { redirect } from './response';
 import { prisma } from './db/driver';
 import { User } from '@prisma/client';
 
@@ -7,7 +6,7 @@ const PasswordCookie = createCookie('password', {
 	httpOnly: true
 });
 
-const REDIRECT_PARAM = 'redirect';
+export const REDIRECT_PARAM = 'redirect';
 
 /**
  * Intent to deprecate once actual users are created.
@@ -48,27 +47,8 @@ export async function getOptionalUser(request: Request): Promise<User | null> {
 
 export async function getUser(request: Request): Promise<User> {
 	const user = await getOptionalUser(request);
-
-	if (user) {
-		return user;
-	}
-
-	throw redirectToLogin(request);
-}
-
-export function redirectToLogin(request?: Request) {
-	const url = request ? new URL(request.url) : { pathname: '/', search: '' };
-	const resolved = [url.pathname, url.search].filter(Boolean).join('?');
-
-	let location = '/s/login';
-
-	if (resolved.length > 1) {
-		const params = new URLSearchParams();
-		params.set(REDIRECT_PARAM, resolved);
-		location += '?' + params.toString();
-	}
-
-	return redirect(location);
+	if (user) return user;
+	throw new Error('Could not fetch user!');
 }
 
 export function redirectFromLogin(request: Request, headers: [string, string][] = []) {
