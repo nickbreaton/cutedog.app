@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { redirect } from './lib/response';
+import './root.css';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'CuteDog.app' }];

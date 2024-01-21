@@ -1,10 +1,8 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { getUser } from '~/lib/auth.server';
-import { Stack } from '~/lib/components/Stack';
 import { prisma } from '~/lib/db/driver';
 import { getLegacyEntries } from '~/lib/db/legacy';
-// import { pets } from '~/lib/db/schema';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	// TODO: eventually use user, but for now guard route
@@ -27,20 +25,18 @@ export default function Pet() {
 	const { name } = pet;
 
 	return (
-		<div>
-			<h1>{name}</h1>
-			<Stack gap={1}>
+		<div className="space-y-6">
+			<h1 className="text-3xl font-bold">{name}</h1>
+			<div className="space-y-4">
 				{entries.map((entry) => (
-					<article key={entry.id}>
-						<Stack gap={0.5}>
-							<h2 style={{ margin: 0 }}>{entry.quotes}</h2>
-							<p>
-								{entry.cachedCity} • {entry.datetime}
-							</p>
-						</Stack>
+					<article key={entry.id} className="space-y-2">
+						<h2 style={{ margin: 0 }}>{entry.quotes}</h2>
+						<p>
+							{entry.cachedCity} • {entry.datetime}
+						</p>
 					</article>
 				))}
-			</Stack>
+			</div>
 		</div>
 	);
 }

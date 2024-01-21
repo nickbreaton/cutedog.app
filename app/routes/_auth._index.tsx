@@ -11,7 +11,9 @@ export default function Component() {
 		<ul>
 			{pets.map((pet) => (
 				<li key={pet.username}>
-					<Link to={pet.username}>{pet.name}</Link>
+					<Link to={pet.username} className="underline">
+						{pet.name}
+					</Link>
 				</li>
 			))}
 		</ul>
