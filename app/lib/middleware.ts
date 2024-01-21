@@ -17,11 +17,15 @@ const redirectCommonSiteRoutes: MiddlewareFn = async ({ request }) => {
 const requireAuthentication: MiddlewareFn = async ({ request }) => {
 	const url = request ? new URL(request.url) : { pathname: '/', search: '' };
 
-	if (url.pathname === '/s/login') return null;
+	if (url.pathname === '/s/login') {
+		return null;
+	}
 
 	const user = await getOptionalUser(request);
 
-	if (user) return null;
+	if (user) {
+		return null;
+	}
 
 	const resolved = [url.pathname, url.search].filter(Boolean).join('?');
 
