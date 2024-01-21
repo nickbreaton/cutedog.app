@@ -60,7 +60,7 @@ export function redirectToLogin(request?: Request) {
 	const url = request ? new URL(request.url) : { pathname: '/', search: '' };
 	const resolved = [url.pathname, url.search].filter(Boolean).join('?');
 
-	let location = '/app/login';
+	let location = '/s/login';
 
 	if (resolved.length > 1) {
 		const params = new URLSearchParams();
