@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import {
 	Links,
 	LiveReload,
@@ -12,6 +12,10 @@ import './root.css';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'CuteDog.app' }];
+};
+
+export const links: LinksFunction = () => {
+	return [{ rel: 'icon', href: 'https://fav.farm/🐶' }];
 };
 
 export function loader({ request }: LoaderFunctionArgs) {
