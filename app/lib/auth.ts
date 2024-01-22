@@ -3,7 +3,8 @@ import { prisma } from './db/driver';
 import { User } from '@prisma/client';
 
 const PasswordCookie = createCookie('password', {
-	httpOnly: true
+	httpOnly: true,
+	maxAge: 60 * 60 * 24 * 30 // 30 days
 });
 
 export const REDIRECT_PARAM = 'redirect';
