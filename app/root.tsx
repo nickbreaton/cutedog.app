@@ -18,18 +18,6 @@ export const links: LinksFunction = () => {
 	return [{ rel: 'icon', href: 'https://fav.farm/🐶' }];
 };
 
-export function loader({ request }: LoaderFunctionArgs) {
-	const url = new URL(request.url);
-
-	if (url.origin.includes('fly.dev')) {
-		const location = new URL(url);
-		location.hostname = 'beta.cutedog.app';
-		throw redirect(location.href, { status: 301 });
-	}
-
-	return null;
-}
-
 export default function App() {
 	return (
 		<html lang="en">

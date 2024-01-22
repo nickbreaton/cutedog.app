@@ -2,7 +2,23 @@ import { redirect } from '@remix-run/node';
 import { REDIRECT_PARAM, getOptionalUser } from './auth';
 import { SITE_ROUTE_REDIRECTS } from './constants';
 
-type MiddlewareFn = ({ request }: { request: Request }) => Promise<null | Response>;
+type MiddlewareFn = ({
+	request
+}: {
+	request: Request;
+}) => null | Response | Promise<null | Response>;
+
+const redirectFromFlyHostname: MiddlewareFn = ({ request }) => {
+	const url = new URL(request.url);
+
+	if (url.origin.includes('fly.dev')) {
+		const location = new URL(url);
+		location.hostname = 'beta.cutedog.app';
+		return redirect(location.href, { status: 301 });
+	}
+
+	return null;
+};
 
 const redirectCommonSiteRoutes: MiddlewareFn = async ({ request }) => {
 	const url = new URL(request.url);
@@ -42,6 +58,7 @@ const requireAuthentication: MiddlewareFn = async ({ request }) => {
 
 // prettier-ignore
 export const middleware: MiddlewareFn[] = [
+	redirectFromFlyHostname,
   redirectCommonSiteRoutes,
   requireAuthentication
 ];
