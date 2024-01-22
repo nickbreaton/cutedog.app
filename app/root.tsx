@@ -1,13 +1,5 @@
-import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import {
-	Links,
-	LiveReload,
-	Meta,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-	redirect
-} from '@remix-run/react';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import './root.css';
 
 export const meta: MetaFunction = () => {
@@ -15,7 +7,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const links: LinksFunction = () => {
-	return [{ rel: 'icon', href: 'https://fav.farm/🐶' }];
+	return [{ rel: 'icon', href: '/favicon.ico' }];
 };
 
 export default function App() {
